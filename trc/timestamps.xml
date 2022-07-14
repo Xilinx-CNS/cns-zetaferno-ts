@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="timestamps" type="package">
+  <objective>Timestamps</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="prologue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="epilogue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="udp_rx" type="script">
+      <objective>Check that when RX timestamps are configured, they can be obtained for UDP packets received with zfur_zc_recv().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="pkts_num"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcp_rx" type="script">
+      <objective>Check that when RX timestamps are configured, they can be obtained for TCP packets received with zft_zc_recv().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <arg name="pkts_num"/>
+        <arg name="iovcnt"/>
+        <arg name="done_some"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="udp_tx" type="script">
+      <objective>Check that when TX timestamps are configured, they can be obtained for sent UDP packets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="pkts_num"/>
+        <arg name="multiple_reports"/>
+        <arg name="send_func"/>
+        <arg name="large_buffer"/>
+        <arg name="few_iov"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="udp_tx_drop" type="script">
+      <objective>Check that when too many UDP packets are sent, some packet reports with TX timestamps are dropped, and ZF_PKT_REPORT_DROPPED flag is set to notify about it.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_func"/>
+        <arg name="large_buffer"/>
+        <arg name="few_iov"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcp_tx" type="script">
+      <objective>Check that when TX timestamps are configured, they can be obtained for sent TCP packets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <arg name="close_tst_first"/>
+        <arg name="send_func"/>
+        <arg name="msg_more"/>
+        <arg name="dropped"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcp_tx_retransmit" type="script">
+      <objective>Check that when TX timestamps are configured, they can be obtained for retransmitted TCP packets, and ZF_PKT_REPORT_TCP_RETRANS flag is set in corresponding packet reports.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <arg name="close_tst_first"/>
+        <arg name="retransmit_type"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="alloc_stack_sleep_connect" type="script">
+      <objective>Check that when there is some sleep betwen allocating ZF stack and creating TCP zocket, all TX timestamps can still be obtained.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

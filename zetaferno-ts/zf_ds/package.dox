@@ -1,0 +1,28 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup zf_ds Zetaferno Delegated Sends API
+@ingroup zf
+@{
+
+The test package contains tests for Zetaferno Delegated Sends API.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref zf_ds-simple_ds
+-# @ref zf_ds-small_header
+-# @ref zf_ds-bad_socket
+-# @ref zf_ds-sendq_busy
+-# @ref zf_ds-nocwin
+-# @ref zf_ds-nowin
+-# @ref zf_ds-extend_ds_win
+-# @ref zf_ds-complete_overfill
+-# @ref zf_ds-complete_too_much
+-# @ref zf_ds-push_flag
+
+@} zf_ds
+
+*/

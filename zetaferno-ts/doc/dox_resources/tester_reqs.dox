@@ -1,0 +1,56 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+@defgroup zf_list_of_reqs Tester requirements list
+@ingroup zf
+
+@tags_reqs_start
+
+@tags_group Incorrect test behavior.
+
+Note! Appropriate Bug ID @b must be specified in comments.
+
+@tag_name   BROKEN
+@tag_descr  Tests which are currenty broken and should not be run in night
+            testing.
+
+@tag_name   SF_BLACKLIST
+@tag_descr  There is a bug in Zetaferno API which can break testing. The
+            test won't be launched in the night testing.
+
+@tags_group Other generic requirements.
+
+@tag_name   SOCK_DGRAM_RX
+@tag_descr  Tests which use ZF UDP RX zockets.
+
+@tag_name   SOCK_DGRAM_TX
+@tag_descr  Tests which use ZF UDP TX zockets.
+
+@tag_name   SOCK_STREAM
+@tag_descr  Tests which use TCP zockets.
+
+@tag_name   ZC_RECV
+@tag_descr  Zero copy receive
+
+@tag_name   PFTF_RECV
+@tag_descr  Overlapped receive
+
+@tag_name   ZFUT_SEND
+@tag_descr  Send iov vectors of datagrams
+
+@tag_name   ZFUT_SEND_SINGLE
+@tag_descr  Copy-based send of single non-fragmented packet
+
+@tag_name   SFC_SFPTPD
+@tag_descr  Timestamps tests requiring sfptpd to be running
+
+@tag_name   ZF_ALTS
+@tag_descr  Tests requiring TX alternatives support on IUT
+
+@tag_name   ZF_ALTS_TST
+@tag_descr  Tests requiring TX alternatives support on Tester
+
+@tags_end
+
+@}
+*/

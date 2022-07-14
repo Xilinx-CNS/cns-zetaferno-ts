@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="udp_tx" type="package">
+  <objective>UDP TX tests</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="send_dgram" type="script">
+      <objective>Send a datagram using Zetaferno Direct API send()-like functions.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="bind_address_types" type="script">
+      <objective>Pass a specific address, INADDR_ANY or NULL using (non-)zero port as local address argument in rpc_zfut_alloc() call. Check that datagrams can be sent in all cases when the call is succeeded.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="addr_type"/>
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="address_reusing" type="script">
+      <objective>Create a few ZF UDP TX zockets with exactly the same addresses couple laddr and raddr. Check that datagrams can be accordingly sent from all zockets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="addr_type"/>
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <arg name="same_stack"/>
+        <arg name="utx_num"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="endpoints_limit" type="script">
+      <objective>Specify maximum number of endpoints using ZF attribute max_udp_tx_endpoints, allocate all possible zockets and check that they can accept datagrams.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <arg name="max_endpoints"/>
+        <arg name="send_later"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zockets_release" type="script">
+      <objective>Open-close up to maximum zockets number in the loop multiple times.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="addr_type"/>
+        <arg name="close_zocket"/>
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="iterations_num"/>
+        <arg name="large_buffer"/>
+        <arg name="process_events"/>
+        <arg name="recreate_stack"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zc_recv_send" type="script">
+      <objective>Receive few datagrams using zero-copy receive, then send the received buffers using TX zocket.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <arg name="single_stack"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="events_sharing" type="script">
+      <objective>Create RX and TX zockets in single stack, send and receive a few datagrams using the zockets, then process all events. Check data is delivered in both directions.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="in_num"/>
+        <arg name="large_buffer"/>
+        <arg name="out_num"/>
+        <arg name="send_first"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="send_recv_flooding" type="script">
+      <objective>Send and receive datagrams incessantly by a few zockets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="duration"/>
+        <arg name="env"/>
+        <arg name="few_iov"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <arg name="thread"/>
+        <arg name="urx_num"/>
+        <arg name="utx_num"/>
+        <arg name="utx_num_large"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="laddr_inaddr_any" type="script">
+      <objective>Bind two zockets using INADDR_ANY in laddr and different destination addresses. Check that datagrams are sent from two different source addresses.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="func"/>
+        <arg name="few_iov"/>
+        <arg name="large_buffer"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zfut_send_max_mss" type="script">
+      <objective>Get MSS and try to send a datagram of this and bigger size.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_func"/>
+        <arg name="dont_fragment"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

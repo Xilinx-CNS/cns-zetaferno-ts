@@ -1,0 +1,19 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup multicast Sending and receiving multicast packets
+@ingroup zf
+@{
+
+The test package contains tests for IP multicast.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref multicast-check_addresses
+
+@} multicast
+
+*/

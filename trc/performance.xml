@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="performance" type="package">
+  <objective>Zetaferno performance testing</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="prologue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="udppingpong" type="script">
+      <objective>Run zfudppingpong to get mean RTT for UDP</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcppingpong" type="script">
+      <objective>Run zftcppingpong to get mean RTT for TCP</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="use_muxer"/>
+        <arg name="overlapped_delay"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="altpingpong" type="script">
+      <objective>Run zfaltpingpong to get mean RTT when using Alternative Sends API.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="tst_alt"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="overlapped" type="package">
+  <objective>Zetaferno overlapped API tests</objective>
+  <notes/>
+
+  <iter result="PASSED">
+    <notes/>
+    <test name="recv_pftf" type="script">
+      <objective>Read a packet using Zetaferno Direct API overlapped reception.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="total_len"/>
+        <arg name="part_len"/>
+        <arg name="mcast_bind"/>
+        <arg name="raddr_bind"/>
+        <arg name="zocket_type"/>
+        <notes/>
+      </iter>
+    </test>
+
+
+    <test name="recv_pftf_two_muxer" type="script">
+      <objective>Check that PFTF API properly receives packets when multiple zockets and muxer sets are used.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="total_len"/>
+        <arg name="part_len"/>
+        <arg name="raddr_bind"/>
+        <arg name="zocket_type"/>
+        <notes/>
+      </iter>
+    </test>
+
+    <test name="recv_pftf_bad_csum" type="script">
+      <objective>Check that PFTF API receives packets with correct or zero checksum and drops packets with bad checksum.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="total_len"/>
+        <arg name="part_len"/>
+        <arg name="mcast_bind"/>
+        <arg name="raddr_bind"/>
+        <arg name="checksum"/>
+        <notes/>
+      </iter>
+    </test>
+
+  </iter>
+
+</test>

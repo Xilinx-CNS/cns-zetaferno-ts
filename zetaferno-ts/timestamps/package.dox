@@ -1,0 +1,25 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup timestamps Zetaferno Timestamps API
+@ingroup zf
+@{
+
+The test package contains tests for Zetaferno Timestamps API.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref timestamps-udp_rx
+-# @ref timestamps-tcp_rx
+-# @ref timestamps-udp_tx
+-# @ref timestamps-udp_tx_drop
+-# @ref timestamps-tcp_tx
+-# @ref timestamps-tcp_tx_retransmit
+-# @ref timestamps-alloc_stack_sleep_connect
+
+@} timestamps
+
+*/

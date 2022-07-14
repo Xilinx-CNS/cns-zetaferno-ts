@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno Delegated Sends API</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <session>
+
+        <run>
+            <script name="simple_ds"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_before" type="boolean"/>
+            <arg name="send_after" type="boolean"/>
+            <arg name="ds_packets">
+                <value>none</value>
+            </arg>
+            <arg name="single_packet" type="boolean"/>
+            <arg name="use_cancel" type="boolean"/>
+            <arg name="reactor_after_send" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="simple_ds"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_before" type="boolean"/>
+            <arg name="send_after" type="boolean"/>
+            <arg name="ds_packets" list="">
+                <value>some</value>
+                <value>all</value>
+                <value>all</value>
+            </arg>
+            <arg name="single_packet" type="boolean" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="use_cancel" type="boolean"/>
+            <arg name="reactor_after_send" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="small_header"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="bad_socket"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="close_way">
+                <value>iut_shutdown</value>
+                <value>tst_shutdown</value>
+                <value>iut_tst_shutdown</value>
+                <value>tst_iut_shutdown</value>
+                <value>tst_rst</value>
+            </arg>
+            <arg name="ds_send" type="boolean">
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="bad_socket"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="close_way">
+                <value>tst_shutdown</value>
+            </arg>
+            <arg name="ds_send" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="sendq_busy"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="nocwin" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="nowin"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_type">
+                <value>normal</value>
+                <value>delegated</value>
+                <value>retransmit</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="extend_ds_win" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="second_rc">
+                <value>ok</value>
+                <value>nowin</value>
+                <value>nocwin</value>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="complete_overfill" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+            <arg name="break_conn" type="boolean"/>
+            <arg name="acks_before_complete" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="complete_overfill" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="ds_send" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="break_conn" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="acks_before_complete" type="boolean">
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="complete_too_much"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="ds_send" type="boolean"/>
+            <arg name="extend_win" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="push_flag"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+        </run>
+
+    </session>
+</package>

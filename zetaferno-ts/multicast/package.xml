@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno tests for IP multicast</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <session>
+
+        <run>
+            <script name="check_addresses"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="one_stack" type="boolean"/>
+            <arg name="zockets_num">
+                <value>3</value>
+            </arg>
+            <arg name="func" type="udp_send_func">
+                <value>zfut_send_single</value>
+            </arg>
+            <arg name="large_buffer" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="few_iov" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="check_addresses"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="one_stack" type="boolean"/>
+            <arg name="zockets_num">
+                <value>3</value>
+            </arg>
+            <arg name="func" type="udp_send_func">
+                <value>zfut_send</value>
+            </arg>
+            <arg name="large_buffer" type="boolean"/>
+            <arg name="few_iov" type="boolean"/>
+        </run>
+
+    </session>
+</package>

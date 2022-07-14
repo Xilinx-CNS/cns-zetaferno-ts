@@ -1,0 +1,35 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup muxer Zetaferno multiplexer API
+@ingroup zf
+@{
+
+The test package contains tests for Zetaferno multiplexer API.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref muxer-muxer_in
+-# @ref muxer-muxer_out
+-# @ref muxer-muxer_inout
+-# @ref muxer-two_muxers
+-# @ref muxer-tcp_connect
+-# @ref muxer-events_on_freed_muxer
+-# @ref muxer-muxer_set_release
+-# @ref muxer-mod_events
+-# @ref muxer-zf_waitable_event
+-# @ref muxer-udp_out
+-# @ref muxer-mod_event_recharge
+-# @ref muxer-double_event
+-# @ref muxer-gone_event
+-# @ref muxer-two_zockets_del
+-# @ref muxer-tcp_shutdown
+-# @ref muxer-muxer_free_zocket
+-# @ref muxer-iomux_stack_activity
+
+@} muxer
+
+*/

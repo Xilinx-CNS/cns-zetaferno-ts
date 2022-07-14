@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: Apache-2.0
+# (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved.
+#
+# Zetaferno test suite specific scripts/to process environments with paths to
+# headers and Zetaferno library.
+#
+
+. ${SF_TS_CONFDIR}/scripts/ipvlan
+. ${SF_TS_CONFDIR}/scripts/zf_update
+. ${SF_TS_CONFDIR}/scripts/sfptpd
+
+export_zf_env
+# Export SFC_ONLOAD_GNU here to get whether local ONLOAD_TREE is used
+export_SFC_ONLOAD_GNU
+
+if test -n "${SF_ZETAFERNO_DIR}" ; then
+    if test -z "${SFC_ZETAFERNO_HEADERS}" ; then
+        export SFC_ZETAFERNO_HEADERS="${SF_ZETAFERNO_DIR}/src/include"
+    fi
+
+    if test -z "${SFC_ZETAFERNO_LIB}" ; then
+        export SFC_ZETAFERNO_LIB="${SFC_ZETAFERNO_GNU}/lib/libonload_zf.so"
+    fi
+
+    if test -z "${SFC_ZETAFERNO_APPS}" ; then
+        export SFC_ZETAFERNO_APPS="${SFC_ZETAFERNO_GNU}/bin/zf_apps/static/"
+    fi
+
+    update_zf_links
+fi
+
+# Forcibly disable ZF_ALTS_TS testing if cfg does not have a description
+# for the paired host (TE_TST1)
+disable_zf_alts_tst=true
+if test -n "${TE_TST1}" -a -e "${SF_TS_CONFDIR}/run/${TE_TST1}" ; then
+
+    # TX alternatives are not supported on EF10 NICs,
+    # and performance/zfaltpingpong requires TX
+    # alternatives both on IUT and Tester.
+
+    cat "${SF_TS_CONFDIR}/run/${TE_TST1}" \
+        | grep "\-\-script=dut\/ef10" >/dev/null
+
+    if [[ $? -ne 0 ]] ; then
+        disable_zf_alts_tst=false
+    fi
+fi
+$disable_zf_alts_tst && TE_EXTRA_OPTS+=" --tester-req=!ZF_ALTS_TST"
+
+export SF_TS_IUT_RPCPROVIDER=ta_rpcs
+export SF_TS_TST_RPCPROVIDER=ta_rpcs
+

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="muxer" type="package">
+  <objective>Zetaferno muxer API</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="muxer_in" type="script">
+      <objective>Add UDP RX, TCP listener and connected (actively and passively) TCP zockets to a muxer set, invoke IN event for all zockets simultaneously or sequentially. Check that muxer returns all incoming events.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="sequential"/>
+        <arg name="accepted_from_set"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="muxer_out" type="script">
+      <objective>Add UDP TX and connected (actively and passively) TCP zockets to a muxer set, check that OUT event is returned for all zockets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="two_muxers" type="script">
+      <objective>Add two different zockets to two muxer sets, invoke incoming events on the both muxers in different order.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="first_zocket_type"/>
+        <arg name="second_zocket_type"/>
+        <arg name="first_event"/>
+        <arg name="second_event"/>
+        <arg name="second_muxer_first"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcp_connect" type="script">
+      <objective>Check multiplexer event which is returned when connection attempt fails or succeeds.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="status">timeout</arg>
+        <arg name="timeout"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="status">refused</arg>
+        <arg name="timeout"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="status">delayed</arg>
+        <arg name="timeout"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="events_on_freed_muxer" type="script">
+      <objective>Multiplexer is not completely freed until all of endpoints are removed from the set. Provoke an event on a zocket when the muxer is freed, but the zocket is still in the set.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <arg name="before_free"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="muxer_set_release" type="script">
+      <objective>In a loop allocate and release a muxer set, which can have a zocket in it.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="set_state"/>
+        <arg name="call_wait"/>
+        <arg name="iterations_number"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="mod_events" type="script">
+      <objective>Check that expected events can be changed when a zocket is already in a muxer set, and the changes take effect immediately after execution of the function zf_muxer_mod().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <arg name="non_block"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zf_waitable_event" type="script">
+      <objective>Get waitable event of a zocket using zf_waitable_event().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zocket_type"/>
+        <arg name="zf_event"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="udp_out" type="script">
+      <objective>Check EPOLLOUT reporting for UDP TX zocket</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="test_muxer"/>
+        <arg name="func"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="mod_event_recharge" type="script">
+      <objective>Check that an event can be returned a few times (like level-triggered events) if the expected event is updated with zf_muxer_mod().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="double_event" type="script">
+      <objective>Check that an event which happens twice is reported only once.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <arg name="muxer_wait"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="gone_event" type="script">
+      <objective>Check that an event is not reported if it is purged before call zf_muxer_wait().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="two_zockets_del" type="script">
+      <objective>Check that after removing a zocket from a muxer set, the muxer can return events only for the left zockets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event_first"/>
+        <arg name="zf_event_second"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="tcp_shutdown" type="script">
+      <objective>Examine muxer behavior after TCP zocket shutdown on write operation using zft_shutdown_tx().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <arg name="event_before"/>
+        <arg name="close_peer"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="muxer_free_zocket" type="script">
+      <objective>Free a zocket while it is in a muxer set, check if the muxer can work after that.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="zf_event"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="iomux_stack_activity" type="script">
+      <objective>Check that an iomux can be used to wait before calling zf_muxer_wait().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="iomux"/>
+        <arg name="edge_triggered"/>
+        <arg name="zf_event"/>
+        <arg name="timeout"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="muxer_inout" type="script">
+      <objective>Add zocket to a muxer set, send traffic from Tester and check that multiplexer handles all events gracefully.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="overlapped"/>
+        <arg name="timeout"/>
+        <arg name="zocket_type"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

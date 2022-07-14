@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<trc_db last_match="true">
+  <test name="zetaferno-ts" type="package">
+    <objective>SFC Zetaferno API Test Suite</objective>
+
+    <xi:include href="globals.xml" parse="xml"
+                xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+    <iter result="PASSED">
+      <notes/>
+
+      <xi:include href="udp_rx.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="udp_tx.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="tcp.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="bnbvalue.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="muxer.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="multicast.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="zf_alt.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="timestamps.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="zf_ds.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="overlapped.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+      <xi:include href="performance.xml" parse="xml"
+                  xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+    <test name="prologue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+
+    <test name="epilogue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+
+    </iter>
+  </test>
+</trc_db>

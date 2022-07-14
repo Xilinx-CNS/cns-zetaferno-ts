@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="zf_alt" type="package">
+  <objective>ZF Alternative Queues API</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="prologue" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="fill_bufs" type="script">
+      <objective>Fill send buffer partly or completely and try to queue data using alternatives API.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="overfill"/>
+        <arg name="queue_first"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="queue_mult" type="script">
+      <objective>Queue a few messages to one alternative and send it, optionally send data using zft_send() while data is put to the alternative queue.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="little">FALSE</arg>
+        <arg name="queue_length"/>
+        <arg name="zft_send">TRUE</arg>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="little">TRUE</arg>
+        <arg name="queue_length"/>
+        <arg name="zft_send"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="little"/>
+        <arg name="queue_length"/>
+        <arg name="zft_send">FALSE</arg>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="alt_overfill" type="script">
+      <objective>Put data to an alternative queue until fail.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="data_size"/>
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="alt_overfill_param" type="script">
+      <objective>Gradually overfill all available alternatives to exercise limits.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="alt_buf_size_min"/>
+        <arg name="data_size"/>
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="alt_reuse" type="script">
+      <objective>Use an alternative by two zockets.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="first_cancel"/>
+        <arg name="first_send">FALSE</arg>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="first_cancel">FALSE</arg>
+        <arg name="first_send"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="first_cancel">TRUE</arg>
+        <arg name="first_send">TRUE</arg>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zft_shutdown" type="script">
+      <objective>Using alternatives after write shutdown on the connection.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="alts_cancel"/>
+        <arg name="alts_release"/>
+        <arg name="alts_send">TRUE</arg>
+        <arg name="env"/>
+        <arg name="zock_shutdown"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="alts_cancel"/>
+        <arg name="alts_release"/>
+        <arg name="alts_send">FALSE</arg>
+        <arg name="env"/>
+        <arg name="zock_shutdown"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zft_alt_sample" type="script">
+      <objective>Send some data over TCP using alternatives API.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="iovcnt"/>
+        <arg name="data_size"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zft_alt_send" type="script">
+      <objective>Queue data to a few alternatives and send it in the loop.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="iterations_num"/>
+        <arg name="iovcnt"/>
+        <arg name="data_size"/>
+        <arg name="n_alts"/>
+        <arg name="use_one"/>
+        <arg name="cancel"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="alt_release" type="script">
+      <objective>Allocate and release ZF alternatives many times, check for resources leakage.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="iterations_num"/>
+        <arg name="alt_action"/>
+        <arg name="alt_release"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="many_zft" type="script">
+      <objective>Queue data to a few alternatives in a few TCP zockets, send data from random zockets and alternatives.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="iterations_num"/>
+        <arg name="zft_num"/>
+        <arg name="iovcnt"/>
+        <arg name="data_size"/>
+        <arg name="send_all"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="no_ack" type="script">
+      <objective>TCP alternatives API if ACK does not come in reply to data packets in time.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="delay"/>
+        <arg name="env"/>
+        <arg name="one_packet"/>
+        <arg name="status"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zft_tst_send" type="script">
+      <objective>Queue some data to alternatives, send data from tester, send alternatives.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="little"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="peer_close" type="script">
+      <objective>Use alternative when peer socket is closed or write shutdown.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="alts_queue"/>
+        <arg name="sock_close"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="no_extra_data" type="script">
+      <objective>Check that no extra packets is sent due to alternative cancelling or events processing.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="open_method"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="invalid_alt_attr_bufs" type="script">
+      <objective>Try to set invalid combinations of attributes alt_count and alt_buf_size, ZF stack allocation should gracefully fail.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="huge_alt_buf"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zft_mixed_send" type="script">
+      <objective>Check that zft_send() function can be called in different positions regarding zf_alternatives_send() calls on the same zocket.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="data_size"/>
+        <arg name="open_method"/>
+        <arg name="where_zft_send"/>
+        <arg name="do_cancel"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

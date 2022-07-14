@@ -1,0 +1,24 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup bnbvalue Bad Parameters and Boundary Values
+@ingroup zf
+@{
+
+This package is intended to test ZF API against careless usage,
+which includes passing incorrect value for parameters (too short or
+too long buffer, @c NULL pointers), inconsistent parameters, boundary
+values, calling functions in wrong order, etc.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref bnbvalue-bad_endpoints_limit
+-# @ref bnbvalue-bad_address
+-# @ref bnbvalue-too_many_stacks_kill
+
+@} bnbvalue
+
+*/

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="bnbvalue" type="package">
+  <objective>Bad and boundary values</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="bad_endpoints_limit" type="script">
+      <objective>Check that ZF stack cannot be created if wrong values are set for attributes setting endpoints limits.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="attribute"/>
+        <arg name="value"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="bad_address" type="script">
+      <objective>Check that passing an invalid address family or length is processed correctly in various ZF API functions.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="function"/>
+        <arg name="family"/>
+        <arg name="length"/>
+        <arg name="mod_laddr"/>
+        <arg name="mod_raddr"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="too_many_stacks_kill" type="script">
+      <objective>Check what happens when many threads create and destroy ZF stacks in infinite loop in parallel (and some of them fail because there are too many stacks), and then they are all killed with SIGKILL.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="threads_num"/>
+        <arg name="nr_hugepages"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

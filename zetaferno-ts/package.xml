@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+
+    <description>SFC Zetaferno API Test Suite</description>
+
+    <author mailto="Andrey.Dmitrov@oktetlabs.ru"/>
+
+    <!--- @page arg_types Test argument types
+    @defgroup arg_types Test argument types
+    @{
+    Definition and description of argument types.
+    -->
+
+    <!-- Don't roll back configuration changes using history after general
+         epilogue. Configurator can fail to apply changes using history
+         when it reverts a tricky configuration for example with namespaces.
+         Some necessary cleanup activity is done in the epilogue and it should
+         not be repeated by Configurator. -->
+    <session track_conf="nohistory">
+
+        <!-- Environment types definition -->
+
+        <!--- @section arg_types_env Environment description
+        Every test has argument @b env written in YACC which describes location of IUT
+        and Tester RPC servers, interfaces and addresses.
+         -->
+
+<!--- @subsection arg_types_env_iut_only env.iut_only
+Create IUT RPC server only.
+-->
+        <var name="env.iut_only" global="true">
+            <value>{{{'pco_iut':IUT}}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer env.peer2peer
+IUT and Tester are located on two different hosts which are connected directly
+using @b SFC NICs. IPv4 addresses are issued for testing.
+-->
+        <var name="env.peer2peer" global="true">
+            <value>'net':IUT{{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,addr:'wild_addr':inet:wildcard,if:'iut_if',addr:'iut_lladdr':ether:unicast},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer_three_addrs env.peer2peer.three_addrs
+Similar to @ref arg_types_env_peer2peer but has three IP addresses allocated
+on IUT instead of just one.
+-->
+        <var name="env.peer2peer.three_addrs" global="true">
+            <value>'net':IUT{{{'pco_iut':IUT},addr:'iut_addr1':inet:unicast,addr:'iut_addr2':inet:unicast,addr:'iut_addr3':inet:unicast,addr:'wild_addr':inet:wildcard,if:'iut_if',addr:'iut_lladdr':ether:unicast},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer_two_addrs env.peer2peer.two_addrs
+Similar to @ref arg_types_env_peer2peer but has two IP addresses allocated
+on IUT and two IP addresses allocated on Tester.
+-->
+        <var name="env.peer2peer.two_addrs" global="true">
+            <value>'net':IUT{{{'pco_iut':IUT},addr:'iut_addr1':inet:unicast,addr:'iut_addr2':inet:unicast,if:'iut_if',addr:'iut_lladdr':ether:unicast},{{'pco_tst':tester},addr:'tst_addr1':inet:unicast,addr:'tst_addr2':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer_gw env.peer2peer_gw
+IUT and Tester RPC servers are located on two different hosts similar to
+@ref arg_types_env_peer2peer, but there is gateway host between IUT and
+Tester. So that there are more opportunities to control traffic flow.
+-->
+        <var name="env.peer2peer_gw" global="true">
+            <value reqs="ENV-GW">'net1':IUT{'iut_host'{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,if:'iut_if',addr:'iut_lladdr':ether:unicast},'GW'{{'pco_gw':tester},addr:'gw_iut_addr':inet:unicast,if:'gw_iut_if',addr:'gw_fake_addr':inet:fake,addr:'gw_iut_lladdr':ether:unicast}},'net2':tester{'GW'{addr:'gw_tst_addr':inet:unicast,if:'gw_tst_if',addr:'alien_link_addr':ether:alien,addr:'gw_tst_lladdr':ether:unicast},'tst_host'{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast,addr:'tst_alien_addr':inet:alien,addr:'tst_fake_addr':inet:fake}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer_ipv4v6 env.peer2peer_ipv4v6
+Similar to @ref arg_types_env_peer2peer but has both IPv4 and IPv6 addresses
+allocated on IUT and Tester.
+-->
+        <var name="env.peer2peer_ipv4v6" global="true">
+            <value reqs="IP6">'net':IUT{{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,addr:'iut_addr6':inet6:unicast},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,addr:'tst_addr6':inet6:unicast}}</value>
+        </var>
+
+<!--- @subsection arg_types_env_peer2peer_mcast env.peer2peer_mcast
+IUT and tester are located on two different hosts which are connected directly
+using @b SFC NICs. IUT has a multicast address.
+-->
+        <var name="env.peer2peer_mcast" global="true">
+            <value>'net':IUT{{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,addr:'mcast_addr':inet:multicast,if:'iut_if'},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if'}}</value>
+        </var>
+
+        <!-- Custom types definition -->
+        <enum name="address_type">
+            <value>specific</value>
+            <value>wildcard</value>
+            <value>null</value>
+        </enum>
+
+        <enum name="remote_address_type">
+            <value>specific</value>
+            <value>wildcard_zero_port</value>
+            <value>null</value>
+        </enum>
+
+        <enum name="address_port_type">
+            <value>specific</value>
+            <value>specific_zero_port</value>
+            <value>wildcard</value>
+            <value>wildcard_zero_port</value>
+            <value>null</value>
+        </enum>
+
+        <enum name="tcp_conn_open_method">
+            <value>active</value>
+            <value>passive</value>
+            <value>passive_close</value>
+        </enum>
+
+        <enum name="udp_recv_func">
+            <value reqs="SOCK_DGRAM_RX,ZC_RECV">zfur_zc_recv</value>
+        </enum>
+
+        <enum name="udp_send_func">
+            <value reqs="SOCK_DGRAM_TX, ZFUT_SEND">zfut_send</value>
+            <value reqs="SOCK_DGRAM_TX, ZFUT_SEND_SINGLE">zfut_send_single</value>
+        </enum>
+
+        <enum name="tcp_recv_func">
+            <value reqs="SOCK_STREAM, ZFT_ZC_RECV">zft_zc_recv</value>
+            <value reqs="SOCK_STREAM, ZFT_RECV">zft_recv</value>
+        </enum>
+
+        <enum name="tcp_send_func">
+            <value reqs="SOCK_STREAM, ZFT_SEND">zft_send</value>
+            <value reqs="SOCK_STREAM, ZFT_SEND_SINGLE">zft_send_single</value>
+        </enum>
+
+        <enum name="shutdown_func">
+            <value>shutdown</value>
+            <value>free</value>
+            <value>none</value>
+        </enum>
+
+        <enum name="zocket_type">
+            <value>urx</value>
+            <value>utx</value>
+            <value>zftl</value>
+            <value>zft-act</value>
+            <value>zft-pas</value>
+        </enum>
+
+        <!-- The test suite prologue -->
+        <prologue>
+            <script name="prologue"/>
+            <arg name="env" ref="env.peer2peer"/>
+        </prologue>
+
+        <epilogue>
+            <script name="epilogue"/>
+            <arg name="env" ref="env.peer2peer"/>
+        </epilogue>
+
+        <!-- Packages definition -->
+        <run>
+            <package name="udp_rx"/>
+        </run>
+
+        <run>
+            <package name="udp_tx"/>
+        </run>
+
+        <run>
+            <package name="tcp"/>
+        </run>
+
+        <run>
+            <package name="bnbvalue"/>
+        </run>
+
+        <run>
+            <package name="muxer"/>
+        </run>
+
+        <run>
+            <package name="multicast"/>
+        </run>
+
+        <run>
+            <package name="zf_alt"/>
+        </run>
+
+        <run>
+            <package name="timestamps"/>
+        </run>
+
+        <run>
+            <package name="zf_ds"/>
+        </run>
+
+        <run>
+            <package name="overlapped"/>
+        </run>
+
+        <run>
+            <package name="performance"/>
+        </run>
+
+    </session>
+
+    <!--- @} -->
+
+</package>

@@ -1,0 +1,20 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup overlapped Overlapped API testing
+@ingroup zf
+@{
+
+The test package contains zetaferno overlapped API tests.
+
+@author Artemii Morozov <Artemii.Morozov@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref overlapped-recv_pftf
+-# @ref overlapped-recv_pftf_bad_csum
+-# @ref overlapped-recv_pftf_two_muxer
+@} overlapped
+
+*/

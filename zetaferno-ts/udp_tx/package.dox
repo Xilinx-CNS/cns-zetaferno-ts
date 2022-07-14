@@ -1,0 +1,28 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup udp_tx UDP TX zocket testing
+@ingroup zf
+@{
+
+The test package contains zetaferno UDP TX zocket API tests.
+
+@author Andrey Dmitrov <Andrey.Dmitrov@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref udp_tx-send_dgram
+-# @ref udp_tx-bind_address_types
+-# @ref udp_tx-address_reusing
+-# @ref udp_tx-endpoints_limit
+-# @ref udp_tx-zockets_release
+-# @ref udp_tx-zc_recv_send
+-# @ref udp_tx-events_sharing
+-# @ref udp_tx-send_recv_flooding
+-# @ref udp_tx-laddr_inaddr_any
+-# @ref udp_tx-zfut_send_max_mss
+
+@} udp_tx
+
+*/

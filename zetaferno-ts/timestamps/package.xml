@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno timestamps API</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <req id="SFC_SFPTPD" sticky="true"/>
+
+    <session>
+
+        <prologue>
+            <script name="prologue"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+        </prologue>
+
+        <epilogue>
+            <script name="epilogue"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+        </epilogue>
+
+        <run>
+            <script name="udp_rx"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="pkts_num">
+                <value>10</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="tcp_rx"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="pkts_num">
+                <value>100</value>
+            </arg>
+            <arg name="iovcnt">
+                <value>1</value>
+                <!-- Random number of IOVs for each call -->
+                <value>-1</value>
+            </arg>
+            <arg name="done_some" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="udp_tx"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="pkts_num">
+                <value>10</value>
+            </arg>
+            <arg name="multiple_reports" type="boolean"/>
+            <arg name="send_func" type="udp_send_func">
+                <value>zfut_send_single</value>
+            </arg>
+            <arg name="large_buffer" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="few_iov" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="udp_tx"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="pkts_num">
+                <value>10</value>
+            </arg>
+            <arg name="multiple_reports" type="boolean"/>
+            <arg name="send_func" type="udp_send_func">
+                <value>zfut_send</value>
+            </arg>
+            <arg name="large_buffer" type="boolean"/>
+            <arg name="few_iov" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="udp_tx_drop"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_func" type="udp_send_func">
+                <value>zfut_send_single</value>
+            </arg>
+            <arg name="large_buffer" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="few_iov" type="boolean">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="udp_tx_drop"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_func" type="udp_send_func">
+                <value>zfut_send</value>
+            </arg>
+            <arg name="large_buffer" type="boolean"/>
+            <arg name="few_iov" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="tcp_tx" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="close_tst_first" type="boolean"/>
+            <arg name="send_func" type="tcp_send_func"/>
+            <arg name="msg_more" type="boolean"/>
+            <arg name="dropped" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="tcp_tx_retransmit" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="close_tst_first" type="boolean"/>
+            <arg name="retransmit_type">
+                <value>SYN</value>
+                <value>FIN</value>
+                <value>DATA</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="alloc_stack_sleep_connect"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+        </run>
+
+    </session>
+</package>

@@ -1,0 +1,50 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/** @mainpage
+
+@tableofcontents
+
+@section copyright_notice Copyright Notice
+
+(c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved.
+
+@section zf_introduction Introduction
+
+Zetaferno Test Suite is aimed to examine Zetaferno Direct API functionality.
+It uses @te_ref te as it's engine.
+
+The suite consists of several packages, see @ref zf_specification for top
+level packages list of <a href="modules.html"><b>Table of Contents</b></a>
+for full packages tree.
+
+See @ref zf_term_abrev for details on the subject.
+
+@section zf_refs References
+
+Find list of documentation mentioned @ref zf_refs_details.
+
+@section zf_conv Conventions
+
+Parameters of tests are referred in the text using bold italic
+(for example, @p pco_iut).
+
+Names of formal arguments of Zetaferno test API functions appear in italic
+(for example, @a addrlen).
+
+Standard defines, elements of enumerations as well as @b errno values
+appear in monotype font (for example, @c AF_INET, @c ENOMEM).
+
+@section zf_ts_structure Test Suite Structure
+
+@ref zf_overview
+
+@ref zf_list_of_reqs
+
+@ref zf_tags_details
+
+@section zf_specification Test Specification
+
+
+@copydoc zf
+
+*/

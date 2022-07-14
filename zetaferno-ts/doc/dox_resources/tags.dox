@@ -1,0 +1,48 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+@defgroup zf_tags_details TRC Tags List
+@ingroup zf
+
+@{
+
+List of tags set on various testing configurations to distinguish them.
+
+@todo This one is incomplete.
+
+@tags_start
+
+@tags_group     Operating systems
+
+@tag_name       linux
+@tag_descr      Test is run on Linux.
+
+@tag_name       linux-*
+@tag_descr      Test is runned on Linux of specific kernel version. <br/>
+                Example: for kernel 2.6.26-2, tags linux-2, linux-2.6,
+                linux-2.6.26 and linux-2.6.26-2 will be defined. Tag
+                linux-2.6 will have value 26.<br/>
+                Note: for Linux kernel v3, tag linux-2.6 is also defined,
+                linux-2.6=40 for kernel 3.0, linux-2.6=41 for kernel
+                3.1 and so on - so expressions like linux-2.6<32 will
+                still work.
+
+@tags_group     Bitness
+
+@tag_name       kernel-64
+@tag_descr      Kernel is 64bit.
+
+@tag_name       kernel-32
+@tag_descr      Kernel is 32bit.
+
+@tag_name       ul-64
+@tag_descr      User space is 64bit.
+
+@tag_name       ul-32
+@tag_descr      User space is 32bit.
+
+@tags_end
+
+@}                              <!--tags -->
+
+*/

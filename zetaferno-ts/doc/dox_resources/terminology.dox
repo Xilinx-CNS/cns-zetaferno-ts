@@ -1,0 +1,31 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup zf_term_abrev Terminology and Abbreviations
+@ingroup zf
+
+@section zf_terminology Terminology
+
+@tdt_start
+
+@tdt_term Interface Under Test
+@tdt_def  Tested interface. A host and even RPC server which IUT interface
+          belongs to can also be named with IUT abbreviation.
+
+@tdt_end
+
+@section zf_abbreviations Abbreviations
+
+@tdt_start
+
+@tdt_term IUT
+@tdt_def  Interface Under Test
+
+@tdt_term PCO
+@tdt_def  Point of Control and Observation
+
+@tdt_end
+
+@}
+*/

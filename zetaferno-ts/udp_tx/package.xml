@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno UDP TX zocket API tests</description>
+
+    <author mailto="Andrey.Dmitrov@oktetlabs.ru"/>
+
+    <req id="SOCK_DGRAM_TX" sticky="true"/>
+
+    <session>
+        <run>
+            <session>
+                <arg name="func" type="udp_send_func" list="func">
+                    <value>zfut_send_single</value>
+                    <value>zfut_send</value>
+                    <value>zfut_send</value>
+                    <value>zfut_send</value>
+                    <value>zfut_send</value>
+                </arg>
+                <arg name="large_buffer" type="boolean" list="func">
+                    <value>FALSE</value>
+                    <value>FALSE</value>
+                    <value>FALSE</value>
+                    <value>TRUE</value>
+                    <value>TRUE</value>
+                </arg>
+                <arg name="few_iov" type="boolean" list="func">
+                    <value>FALSE</value>
+                    <value>FALSE</value>
+                    <value>TRUE</value>
+                    <value>FALSE</value>
+                    <value>TRUE</value>
+                </arg>
+
+                <run>
+                    <script name="send_dgram"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="bind_address_types"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="addr_type" type="address_port_type"/>
+                </run>
+
+                <run>
+                    <script name="address_reusing"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="utx_num">
+                        <value>10</value>
+                    </arg>
+                    <arg name="same_stack" type="boolean"/>
+                    <arg name="addr_type" type="address_port_type">
+                        <value>specific</value>
+                        <value>wildcard</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="endpoints_limit"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="send_later" type="boolean"/>
+                    <arg name="max_endpoints">
+                        <value>-1</value>
+                        <value>1</value>
+                        <value>10</value>
+                        <value>64</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="zockets_release"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="iterations_num">
+                        <value>100</value>
+                    </arg>
+                    <arg name="addr_type" type="address_port_type">
+                        <value>specific</value>
+                        <value>wildcard</value>
+                    </arg>
+                    <arg name="recreate_stack" type="boolean" list="">
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                        <value>TRUE</value>
+                    </arg>
+                    <arg name="close_zocket" type="boolean" list="">
+                        <value>TRUE</value>
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                    </arg>
+                    <arg name="process_events" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="events_sharing">
+                      <!-- Test is incompatible with ZF TX timestamps. ST-2215 -->
+                      <req id="NO_ZF_TX_TS"/>
+                    </script>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="in_num">
+                        <value>10</value>
+                    </arg>
+                    <arg name="out_num">
+                        <value>10</value>
+                    </arg>
+                    <arg name="send_first" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="zc_recv_send"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="single_stack" type="boolean"/>
+                    <arg name="large_buffer" type="boolean">
+                        <value>FALSE</value>
+                    </arg>
+                    <arg name="few_iov" type="boolean">
+                        <value>FALSE</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="send_recv_flooding" track_conf="silent"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="urx_num">
+                        <value>5</value>
+                    </arg>
+                    <arg name="utx_num">
+                        <value>5</value>
+                    </arg>
+                    <arg name="utx_num_large">
+                        <value>2</value>
+                    </arg>
+                    <arg name="duration">
+                        <value>10</value>
+                    </arg>
+                    <arg name="thread" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="laddr_inaddr_any"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer.two_addrs"/>
+                    </arg>
+                </run>
+
+            </session>
+        </run>
+
+        <run>
+            <script name="zfut_send_max_mss"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="send_func" list="">
+                <value>zfut_send_single</value>
+                <value>zfut_send</value>
+                <value>zfut_send</value>
+            </arg>
+            <arg name="dont_fragment" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+    </session>
+
+</package>

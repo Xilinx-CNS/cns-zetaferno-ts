@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="zf_ds" type="package">
+  <objective>Zetaferno Delegated Sends API</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="simple_ds" type="script">
+      <objective>Check that data can be sent with Delegated Sends API</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before"/>
+        <arg name="send_after"/>
+        <arg name="ds_packets"/>
+        <arg name="single_packet"/>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="small_header" type="script">
+      <objective>Check that zf_delegated_send_prepare() correctly processes too small headers buffer size.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="ds_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="bad_socket" type="script">
+      <objective>Check that zf_delegated_send_prepare() fails when called on a zocket in inappropriate TCP state.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="close_way"/>
+        <arg name="ds_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="sendq_busy" type="script">
+      <objective>Check that zf_delegated_send_prepare() fails when called on a zocket with filled send queue.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="ds_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="nocwin" type="script">
+      <objective>Check that zf_delegated_send_prepare() fails when TCP congestion window is not large enough for requested data length (unless cong_wnd_override is used).</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="ds_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="nowin" type="script">
+      <objective>Check behaviour of zf_delegated_send_prepare() when it is called on a zocket with insufficient TCP send window.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_type"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="extend_ds_win" type="script">
+      <objective>Check that zf_delegated_send_prepare() can be called the second time to extend the window reserved for delegated sends before all bytes in the currently reserved window are completed or cancelled.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="second_rc"/>
+        <arg name="ds_send"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="complete_overfill" type="script">
+      <objective>Check that zf_delegated_send_complete() correctly processes the case when too many iovecs are passed to it.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="ds_send"/>
+        <arg name="break_conn"/>
+        <arg name="acks_before_complete"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="complete_too_much" type="script">
+      <objective>Check that zf_delegated_send_complete() fails with EMSGSIZE when more data is passed to it than was reserved for delegated sends.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="ds_send"/>
+        <arg name="extend_win"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="push_flag" type="script">
+      <objective>Check that TCP PUSH flag is set as expected by zf_delegated_send_tcp_update().</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

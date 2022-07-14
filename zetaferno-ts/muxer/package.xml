@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno multiplexer API</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <session>
+
+        <enum name="zf_event_def">
+            <value>urx.in</value>
+            <value>zft-act.in</value>
+            <value>zft-act.out</value>
+            <value>zft-pas.in</value>
+            <value>zft-pas.out</value>
+            <value>zftl.in</value>
+        </enum>
+
+        <run>
+            <script name="muxer_in"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="sequential" type="boolean"/>
+            <arg name="accepted_from_set" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="muxer_out"/>
+            <arg name="env">
+                <value ref="env.peer2peer.two_addrs"/>
+            </arg>
+        </run>
+
+        <run>
+            <script name="two_muxers"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="first_zocket_type" type="zocket_type">
+                <value>urx</value>
+                <value>zftl</value>
+                <value>zft-act</value>
+                <value>zft-pas</value>
+            </arg>
+            <arg name="second_zocket_type" type="zocket_type">
+                <value>urx</value>
+                <value>zftl</value>
+                <value>zft-act</value>
+                <value>zft-pas</value>
+            </arg>
+            <arg name="first_event" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="second_event" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="second_muxer_first" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="tcp_connect" track_conf="silent">
+              <!-- Test is incompatible with ZF TX timestamps. ST-2215 -->
+              <req id="NO_ZF_TX_TS"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="status">
+                <value>refused</value>
+                <value>timeout</value>
+                <value>delayed</value>
+            </arg>
+            <arg name="timeout">
+                <value>-1</value>
+                <value>0</value>
+                <value>500</value>
+                <value>10000</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="events_on_freed_muxer" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event">
+                <value>urx.in</value>
+                <value>zft-act.in</value>
+                <value>zft-act.out</value>
+                <value>zft-pas.in</value>
+                <value>zft-pas.out</value>
+                <value>zftl.in</value>
+                <value>urx.in,zft-act.in,zft-act.out,zft-pas.in,zft-pas.out,zftl.in</value>
+            </arg>
+            <arg name="before_free" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="muxer_set_release"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="set_state">
+                <value>none</value>
+                <value>add</value>
+                <value>del</value>
+                <value>del_late</value>
+            </arg>
+            <arg name="call_wait" type="boolean"/>
+            <arg name="iterations_number">
+                <value>1000</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="mod_events"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event" type="zf_event_def"/>
+            <arg name="non_block" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zf_waitable_event"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zocket_type" type="zocket_type"/>
+            <arg name="zf_event">
+                <value>in</value>
+                <value>out</value>
+                <value>err</value>
+                <value>hup</value>
+                <value>all</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="udp_out"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="test_muxer" type="boolean"/>
+            <arg name="func" type="udp_send_func"/>
+        </run>
+
+        <run>
+            <script name="mod_event_recharge"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event" type="zf_event_def"/>
+        </run>
+
+        <run>
+            <script name="double_event">
+                <!-- Test is incompatible with ZF TX/RX timestamps. ST-2215 -->
+                <req id="NO_ZF_TX_TS"/>
+                <req id="NO_ZF_RX_TS"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event" type="zf_event_def"/>
+            <arg name="muxer_wait" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="gone_event"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event" type="zf_event_def"/>
+        </run>
+
+        <run>
+            <script name="two_zockets_del">
+                <!-- The test with ZF TX timestamps produces assert().
+                     Disabled until ON-12597 is fixed. -->
+                <req id="NO_ZF_TX_TS"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event_first" type="zf_event_def"/>
+            <arg name="zf_event_second" type="zf_event_def"/>
+        </run>
+
+        <run>
+            <script name="tcp_shutdown">
+                <!-- Test is incompatible with ZF TX timestamps. ST-2215 -->
+                <req id="NO_ZF_TX_TS"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event">
+                <value>zft-act.in</value>
+                <value>zft-act.out</value>
+                <value>zft-act.in_out</value>
+                <value>zft-pas.in</value>
+                <value>zft-pas.out</value>
+                <value>zft-pas.in_out</value>
+            </arg>
+            <arg name="event_before" type="boolean"/>
+            <arg name="close_peer" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="muxer_free_zocket"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zf_event">
+                <value>zft-act.in</value>
+                <value>zft-pas.in</value>
+                <value>urx.in</value>
+                <value>zftl.in</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="iomux_stack_activity"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="iomux">
+                <value>select</value>
+                <value>pselect</value>
+                <value>poll</value>
+                <value>ppoll</value>
+            </arg>
+            <arg name="edge_triggered" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="zf_event" type="zf_event_def"/>
+            <arg name="timeout">
+                <value>-1</value>
+                <value>0</value>
+                <value>500</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="iomux_stack_activity"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="iomux">
+                <value>epoll</value>
+                <value>epoll_pwait</value>
+            </arg>
+            <arg name="edge_triggered" type="boolean"/>
+            <arg name="zf_event" type="zf_event_def"/>
+            <arg name="timeout">
+                <value>-1</value>
+                <value>0</value>
+                <value>500</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="muxer_inout">
+                <req id="SOCK_STREAM"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="overlapped" type="boolean">
+                <!-- ON-12534 -->
+                <value reqs="BROKEN">TRUE</value>
+                <value>FALSE</value>
+            </arg>
+            <arg name="zocket_type" type="zocket_type">
+                <value>zft-act</value>
+                <value>zft-pas</value>
+            </arg>
+            <arg name="timeout">
+                <value>-1</value>
+                <value>500</value>
+            </arg>
+        </run>
+
+    </session>
+</package>

@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno tests for ZF alternative queues</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <req id="ZF_ALTS" sticky="true"/>
+
+    <session>
+
+        <!-- The test suite prologue -->
+        <prologue>
+            <script name="prologue"/>
+            <arg name="env" ref="env.iut_only"/>
+        </prologue>
+
+        <run>
+            <session>
+                <arg name="open_method" type="tcp_conn_open_method">
+                    <value>active</value>
+                    <value>passive</value>
+                </arg>
+
+                <run>
+                    <script name="fill_bufs"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="overfill" type="boolean"/>
+                    <arg name="queue_first" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="queue_mult"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="queue_length">
+                        <value>10</value>
+                    </arg>
+                    <arg name="zft_send" type="boolean" list="">
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                        <value>TRUE</value>
+                    </arg>
+                    <arg name="little" type="boolean" list="">
+                        <value>FALSE</value>
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="alt_overfill"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1</value>
+                        <value>1000</value>
+                        <value>3000</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="alt_overfill_param"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1</value>
+                    </arg>
+                    <arg name="alt_buf_size_min" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="alt_overfill_param"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1000</value>
+                        <value>3000</value>
+                    </arg>
+                    <arg name="alt_buf_size_min" type="boolean">
+                        <value>FALSE</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="alt_reuse"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="first_send" type="boolean" list="">
+                        <value>TRUE</value>
+                        <value>TRUE</value>
+                        <value>FALSE</value>
+                    </arg>
+                    <arg name="first_cancel" type="boolean" list="">
+                        <value>TRUE</value>
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="zft_shutdown"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="alts_send" type="boolean"/>
+                    <arg name="alts_cancel" type="boolean"/>
+                    <arg name="alts_release" type="boolean"/>
+                    <arg name="zock_shutdown" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="zft_alt_sample"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="iovcnt">
+                        <value>1</value>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1</value>
+                        <value>1400</value>
+                        <value>3000</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="zft_alt_send"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="iterations_num">
+                        <value>1000</value>
+                    </arg>
+                    <arg name="iovcnt">
+                        <value>1</value>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1</value>
+                        <value>1400</value>
+                        <value>3000</value>
+                    </arg>
+                    <arg name="n_alts">
+                        <value>2</value>
+                        <value>-1</value> <!-- Use maximum value. -->
+                    </arg>
+                    <arg name="use_one" type="boolean"/>
+                    <arg name="cancel" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="alt_release"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="iterations_num" list="">
+                        <value>1000</value>
+                        <value>30</value>
+                    </arg>
+                    <arg name="alt_action">
+                        <value>none</value>
+                        <value>send</value>
+                        <value>cancel</value>
+                    </arg>
+                    <arg name="alt_release" list="">
+                        <value>queue</value>
+                        <value>stack</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="many_zft"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="iterations_num">
+                        <value>100</value>
+                    </arg>
+                    <arg name="zft_num">
+                        <value>5</value>
+                    </arg>
+                    <arg name="iovcnt">
+                        <value>1</value>
+                    </arg>
+                    <arg name="data_size">
+                        <value>1</value>
+                        <value>1400</value>
+                        <value>3000</value>
+                    </arg>
+                    <arg name="send_all" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="no_ack" track_conf="silent">
+                        <req id="PROC_SYS_NET"/>
+                    </script>
+                    <arg name="env">
+                        <value ref="env.peer2peer_gw"/>
+                    </arg>
+                    <arg name="status">
+                        <value>refused</value>
+                        <value>timeout</value>
+                        <value>delayed</value>
+                    </arg>
+                    <arg name="one_packet" type="boolean" list="">
+                        <value>FALSE</value>
+                        <value>FALSE</value>
+                        <value>TRUE</value>
+                    </arg>
+                    <arg name="delay" list="">
+                        <value>0</value>
+                        <value>100</value>
+                        <value>0</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="zft_tst_send"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="little" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="peer_close"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="alts_queue" type="boolean"/>
+                    <arg name="sock_close" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="no_extra_data"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                </run>
+
+            </session>
+        </run>
+
+        <run>
+            <script name="invalid_alt_attr_bufs"/>
+            <arg name="env">
+                <value ref="env.iut_only"/>
+            </arg>
+            <arg name="huge_alt_buf" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zft_mixed_send"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="data_size">
+                <value>1</value>
+                <value>1400</value>
+                <value>3000</value>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method">
+                <value>active</value>
+                <value>passive</value>
+            </arg>
+            <arg name="where_zft_send" list="">
+                <value>before_alts_queue</value>
+                <value>after_alts_queue</value>
+                <value>after_alts_queue</value>
+                <value>before_alts_send</value>
+            </arg>
+            <arg name="do_cancel" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+    </session>
+</package>

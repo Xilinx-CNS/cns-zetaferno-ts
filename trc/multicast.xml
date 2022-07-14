@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="multicast" type="package">
+  <objective>IP multicast</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="check_addresses" type="script">
+      <objective>Transmit multicast datagrams from few UDP zockets, check that source and destination IP and MAC addresses are correct.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="one_stack"/>
+        <arg name="zockets_num"/>
+        <arg name="func"/>
+        <arg name="large_buffer"/>
+        <arg name="few_iov"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

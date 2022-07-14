@@ -1,0 +1,116 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+@defgroup zf_overview Zetaferno testing overview
+@ingroup zf
+
+@section zf_overview_introduction Introduction
+
+The testing is dedicated to examine Zetaferno network stack behavior and API basing on the public API, i.e. it is a kind of requirements based coverage. Most tests are designed to check correct using of the API. However, some points of invalid using, especially which are not obvious invalid, also tried to be covered. The last coverage review was done around <b>12 Nov 2016 for c82654b24c75 revision</b>.
+
+There are two test suites that are used for Zetaferno testing: sapi-ts (using ZF shim extension) and Zetaferno Direct.
+
+@section zf_overview_coverage Tests coverage
+  - UDP
+
+    Zetaferno API for UDP significantly differs from the socket representation. It is split to two subgroups UPD RX and TX. So UDP testing is mostly covered by ZF direct test suite including such features as:
+    - multiple bind/unbind of UDP RX zockets;
+    - bindig to various address types (specific, INADDR_ANY, zero port, NULL);
+    - zockets limits;
+    - event queues;
+    - zero-copy reception;
+    - various iov buffers number and size;
+    - ZF specific functions.
+
+    Also there are few common tests in sapi-ts with ZF shim.
+
+  - Multicasts
+    - one test in ZF Direct for multicast TX to check HW and IP addresses;
+    - multicast RX is tested in sapi-ts.
+
+  - TCP
+
+    There are a lot of tests as in ZF Direct tesuite and sapi-ts. Zetaferno specific API is tested in ZF Direct test suite:
+    - bindig to various address types (specific, INADDR_ANY, zero port, NULL);
+    - all kinds of zockets (endpoints) limits;
+    - event queues;
+    - zero-copy reception;
+    - various iov buffers number and size;
+    - API behavior with incomplete connection;
+    - ZF stack sharing;
+    - buffers overfilling;
+    - competition for addresses;
+    - events processing with ZF reactor;
+    - MSG_MORE flags feature;
+    - ZF specific functions;
+    - attribute tcp_delayed_ack;
+    - attribute tcp_wait_for_time_wait;
+    - attribute tcp_timewait_ms;
+    - attribute tcp_finwait_ms;
+    - attribute tcp_syn_retries.
+
+    Most of standard TCP features are tested in sapi-ts:
+    - TCP state machine;
+    - connection establishing;
+    - connection closing;
+    - channel misbehavior;
+    - one or two sides shutdown;
+    - etc.
+
+  - Muxer
+
+    There are a few tests in ZF Direct for testing general operations like add/mod/del endpoints to a multiplexer set. All tests where it makes sense are iterated with all kinds of zockets: UDP RX, UDP TX, TCP listener, zft. Also ZF specific features are tested. In particular, cases:
+    - add all kinds of zockets to one muxer set, invoke and process events;
+    - multiplexer event after a connection attempt;
+    - event on freed multiplexer;
+    - re-arm an event using zf_muxer_mod();
+    - an event happens twice (no extra events reported);
+    - delete one by one zockets from a muxer set.
+    Also there are a few epoll tests in sapi-ts which check usual epoll functionality.
+
+  - ZF alternatives
+
+    It is Zetaferno specific API group. It is completely tested in ZF Direct test suite:
+    - data queuing (sending) to one or a few alternatives in various order and combintaions;
+    - alternatives cancelling;
+    - check sent data correctnes;
+    - API behavior if ACK does not come in reply to data packets in time (rst, timeout, delay);
+    - resources leaks;
+    - buffer limits;
+    - alternatives number limits;
+    - data reception while there is queued data;
+    - peer shutdown;
+    - no extra data is sent after an alternative cancel.
+
+  - ZF stack
+    - three global options (see description below):
+      - zf_has_pending_reactor;
+      - zf_has_pending_threads;
+      - zf_stack_fd_poll.
+    - track ZF stack activity using various iomuxes (test muxer/iomux_stack_activity);
+    - zf_stack_to_waitable(), zf_stack_is_quiescent() are tested in tcp/wait_for_time_wait;
+
+  - Attributes:
+    - No special testing is done for attributes API. But ZF attributes allocation and free is used in all tests. Besides some tests require to specify some attribute values, which is done using function zf_attr_set_int().
+
+@section zf_overview_optios ZF Direct global options
+
+Zetaferno Direct test suite has three global options, which can be enabled using <b>\-\-ool=option_name</b>.
+
+@tdt_start
+@tdt_term zf_has_pending_reactor
+@tdt_def Call zf_stack_has_pending_work() before ZF reactor.
+@tdt_term zf_has_pending_threads
+@tdt_def Create a thread which repeatedly calls zf_stack_has_pending_work() during tests execution.
+@tdt_term zf_stack_fd_poll
+@tdt_def Call poll() on a stack waiting for events
+@tdt_end
+
+They can be used separately or together in any combinations. It is not expected that they bring any side effect in tests execution.
+
+@section zf_overview_todo TODO
+  - Bug 66315: New ZF test: tcp_rx_flush on send path - possibly lost event by muxer
+  - Attributes API testing:
+    - write test plan;
+    - Bug 60870: implement RPCs: 6/9.
+*/

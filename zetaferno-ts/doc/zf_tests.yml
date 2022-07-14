@@ -1,0 +1,500 @@
+# SPDX-License-Identifier: Apache-2.0
+# (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved.
+groups:
+- group: zetaferno-ts
+  summary: zf_direct
+  objective: Zetaferno Direct API Test Suite
+  groups:
+  - group: tcp
+    summary: The test package contains zetaferno TCP zocket API tests.
+    objective: TCP Tests
+    tests:
+    - test: tcp_passive
+      summary: Passive TCP connection opening using Zetaferno Direct API
+      ref: tcp-tcp_passive
+
+    - test: tcp_active
+      summary: Active TCP connection opening using Zetaferno Direct API
+      ref: tcp-tcp_active
+
+    - test: listeners_limit
+      summary: Examine listener zockets number limit
+      ref: tcp-listeners_limit
+
+    - test: delayed_ack
+      summary: TCP delayed ACK
+      ref: tcp-delayed_ack
+
+    - test: wait_for_time_wait
+      summary: Influence of ZF attribute @b tcp_wait_for_time_wait
+      ref: tcp-wait_for_time_wait
+
+    - test: listen_address_types
+      summary: Test possible kinds of local address types to bind listener zocket
+      ref: tcp-listen_address_types
+
+    - test: listen_reuse_laddr
+      summary: Try to create two listener zockets with the same laddr.
+      ref: tcp-listen_reuse_laddr
+
+    - test: share_events_queue
+      summary: Events queue sharing RX/TX.
+      ref: tcp-share_events_queue
+
+    - test: zc_read_buffers
+      summary: Use various buffers number (iovcnt) in random order in zero-copy read.
+      ref: tcp-zc_read_buffers
+
+    - test: recv_buffer_overfilling
+      summary: Examine zocket receive buffer overfilling.
+      ref: tcp-recv_buffer_overfilling
+
+    - test: send_buffer_overfilling
+      summary: Examine send buffers overfilling.
+      ref: tcp-send_buffer_overfilling
+
+    - test: locked_rx_buffers
+      summary: Buffers are locked until @c zft_zc_recv_done is performed.
+      ref: tcp-locked_rx_buffers
+
+    - test: zft_send_buffers
+      summary: A few calls @a zft_send() in a row using various send buffers.
+      ref: tcp-zft_send_buffers
+
+    - test: connect_after_fault
+      summary: Connect after failed connection attempt
+      ref: tcp-connect_after_fault
+
+    - test: incomplete_connect
+      summary: Call a TCP function with incomplete connection.
+      ref: tcp-incomplete_connect
+
+    - test: reactor_recv_event
+      summary: Wait for data reception event blocking on ZF reactor.
+      ref: tcp-reactor_recv_event
+
+    - test: zft_handle
+      summary: Test zft_handle processing without connection.
+      ref: tcp-zft_handle
+
+    - test: zft_send_space
+      summary: Check send buffer size using zft_send_space()
+      ref: tcp-zft_send_space
+
+    - test: zc_recv_done_some
+      summary: Read a part of data with zero-copy receive.
+      ref: tcp-zc_recv_done_some
+
+    - test: msg_more
+      summary: Send data using MSG_MORE flag.
+      ref: tcp-msg_more
+
+    - test: sleep_after_stack_alloc
+      summary: Sleeping after stack allocation before creating a zocket
+      ref: tcp-sleep_after_stack_alloc
+
+    - test: bind_address_types
+      summary: Test possible kinds of local address types to bind.
+      ref: tcp-bind_address_types
+
+    - test: bind_twice
+      summary: Try to bind twice.
+      ref: tcp-bind_twice
+
+    - test: endpoints_limit
+      summary: Examine active open TCP zockets number limit.
+      ref: tcp-endpoints_limit
+
+    - test: listen_backlog
+      summary: Process a few connections arrived before @c zf_reactor_perform().
+      ref: tcp-listen_backlog
+
+    - test: listen_share_stack
+      summary: ZF stack sharing by two listener zockets.
+      ref: tcp-listen_share_stack
+
+    - test: two_active_zockets
+      summary: Coexistence of two active TCP zockets.
+      ref: tcp-two_active_zockets
+
+    - test: unaccepted_endpoints_limit
+      summary: Unaccepted endpoints limit.
+      ref: tcp-unaccepted_endpoints_limit
+
+    - test: zockets_release
+      summary: Open-close TCP zockets multiple times.
+      ref: tcp-zockets_release
+
+  - group: udp_rx
+    summary: The test package contains zetaferno UDP RX zocket API tests.
+    objective: UDP RX tests
+    tests:
+    - test: multiple_unbind
+      summary: Bind and unbind UDP RX zocket many times
+      ref: udp_rx-multiple_unbind
+
+    - test: multiple_bind_intensive
+      summary: Bind zocket a few times, check it receives only expected datagrams
+      ref: udp_rx-multiple_bind_intensive
+
+    - test: events_queue
+      summary: Datagrams reception by a few UDP RX zockets
+      ref: udp_rx-events_queue
+
+    - test: overfill_receive_queue
+      summary: Examine receive queue overfilling
+      ref: udp_rx-overfill_receive_queue
+
+    - test: endpoints_limit
+      summary: Examine UDP RX zockets number limits
+      ref: udp_rx-endpoints_limit
+
+    - test: bind_address_types
+      summary: Test possible kinds of remote and local address types to bind.
+      ref: udp_rx-bind_address_types
+
+    - test: buffers_number
+      summary: Use various buffers number (iovcnt) in random order
+      ref: udp_rx-buffers_number
+
+    - test: zockets_release
+      summary: Open-close UDP RX zockets multiple times.
+      ref: udp_rx-zockets_release
+
+    - test: recv_dgram
+      summary: Datagrams reception using Zetaferno Direct API
+      ref: udp_rx-recv_dgram
+
+    - test: multiple_bind
+      summary: Binding to multiple local addresses
+      ref: udp_rx-multiple_bind
+
+    - test: bind_twice
+      summary: Bind twice to the same local and remote addresses couple
+      ref: udp_rx-bind_twice
+
+    - test: locked_buffers
+      summary: Buffers are locked until @c zfur_zc_recv_done is performed
+      ref: udp_rx-locked_buffers
+
+  - group: udp_tx
+    summary: The test package contains zetaferno UDP TX zocket API tests.
+    objective: UDP TX tests
+    tests:
+    - test: zc_recv_send
+      summary: Send zero-copy received datagrams.
+      ref: udp_tx-zc_recv_send
+
+    - test: send_recv_flooding
+      summary: Send-receive flooding with multiple zockets.
+      ref: udp_tx-send_recv_flooding
+
+    - test: events_sharing
+      summary: Events queue sharing by TX and RX zockets.
+      ref: udp_tx-events_sharing
+
+    - test: laddr_inaddr_any
+      summary: Correct source address is used if bind to @c INADDR_ANY.
+      ref: udp_tx-laddr_inaddr_any
+
+    - test: zfut_send_max_mss
+      summary: Check zfut_get_mss() returns a real maximum.
+      ref: udp_tx-zfut_send_max_mss
+
+    - test: endpoints_limit
+      summary: Examine UDP TX zockets number limits
+      ref: udp_tx-endpoints_limit
+
+    - test: bind_address_types
+      summary: Test possible kinds of local address types to bind.
+      ref: udp_tx-bind_address_types
+
+    - test: send_dgram
+      summary: Datagrams transmission using Zetaferno Direct API
+      ref: udp_tx-send_dgram
+
+    - test: zockets_release
+      summary: Open-close UDP TX zockets multiple times.
+      ref: udp_tx-zockets_release
+
+    - test: address_reusing
+      summary: A few zockets bound to the same addresses couple
+      ref: udp_tx-address_reusing
+
+  - group: multicast
+    summary: The package contains tests of multicasting with zetaferno API.
+    objective: Multicasts tests
+    tests:
+    - test: check_addresses
+      summary: Test source and destination IP and MAC addresses
+      ref: multicast-check_addresses
+
+  - group: muxer
+    summary: The test package contains zetaferno multiplexer API tests.
+    objective: Multiplexer tests
+    tests:
+
+    - test: muxer_in
+      summary: Process incoming events using multiplexer
+      ref: muxer-muxer_in
+
+    - test: muxer_out
+      summary: Process outgoing events using multiplexer
+      ref: muxer-muxer_out
+
+    - test: two_muxers
+      summary: Process incoming events using two multiplexers
+      ref: muxer-two_muxers
+
+    - test: tcp_connect
+      summary: Multiplexer event after a connection attempt
+      ref: muxer-two_connect
+
+    - test: events_on_freed_muxer
+      summary: Event on freed multiplexer
+      ref: muxer-events_on_freed_muxer
+
+    - test: muxer_set_release
+      summary: Allocate and release a muxer set a lot of times
+      ref: muxer-muxer_set_release
+
+    - test: mod_events
+      summary: Change expected events
+      ref: muxer-mod_events
+
+    - test: mod_event_recharge
+      summary: Re-arm an event using @c zf_muxer_mod()
+      ref: muxer-mod_event_recharge
+
+    - test: double_event
+      summary: An event happens twice
+      ref: muxer-double_event
+
+    - test: gone_event
+      summary: An event has gone when @c zf_muxer_wait is called
+      ref: muxer-gone_event
+
+    - test: two_zockets_del
+      summary: Delete one by one zockets from a muxer set
+      ref: muxer-two_zockets_del
+
+    - test: tcp_shutdown
+      summary: Muxer behavior after TCP zocket shutdown on write
+      ref: muxer-tcp_shutdown
+
+    - test: muxer_free_zocket
+      summary: Free a zocket while it is in a muxer set
+      ref: muxer-muxer_free_zocket
+
+    - test: zf_waitable_event
+      summary: Get waitable event by @c zf_waitable handle
+      ref: muxer-zf_waitable_event
+
+    - test: iomux_stack_activity
+      summary: Track ZF stack activity using various iomuxes.
+      ref: muxer-iomux_stack_activity
+
+    - test: muxer_inout
+      summary: Process events using multiplexer expecting both incoming/outcoming events
+      ref: muxer-muxer_inout
+
+    - test: udp_out
+      summary: Check @c EPOLLOUT reporting for UDP TX zocket
+      ref: muxer-udp_out
+
+  - group: zf_alt
+    summary: The test package contains zetaferno alternatives API tests.
+    objective: Zetaferno alternatives tests
+    tests:
+
+    - test: zft_alt_sample
+      summary: ZF alternatives API sanity test
+      ref: zf_alt-zft_alt_sample
+
+    - test: zft_alt_send
+      summary: Send data using TCP alternatives.
+      ref: zf_alt-zft_alt_send
+
+    - test: many_zft
+      summary: Send data from a few TCP zockets using TCP alternatives.
+      ref: zf_alt-many_zft
+
+    - test: alt_release
+      summary: Allocate and release ZF alternatives many times.
+      ref: zf_alt-alt_release
+
+    - test: fill_bufs
+      summary: Queue data using alternatives API while send buffer is not empty.
+      ref: zf_alt-fill_bufs
+
+    - test: no_ack
+      summary: ACK does not come in time.
+      ref: zf_alt-no_ack
+
+    - test: zft_mixed_send
+      summary: Send data mixing usual send and alternatives.
+      ref: zf_alt-zft_mixed_send
+
+    - test: zft_tst_send
+      summary: Receive data from the peer while there is queue data in alternatives.
+      ref: zf_alt-zft_tst_send
+
+    - test: zft_shutdown
+      summary: Alternatives API behavior after zft_shutdown_tx().
+      ref: zf_alt-zft_shutdown
+
+    - test: alt_reuse
+      summary: Reuse an alternative with a different zocket.
+      ref: zf_alt-alt_reuse
+
+    - test: peer_close
+      summary: Alternatives API using when peer socket is closed or shutdown.
+      ref: zf_alt-peer_close
+
+    - test: queue_mult
+      summary: Queue a few messages to one alternative.
+      ref: zf_alt-queue_mult
+
+    - test: alt_overfill
+      summary: Overfill an alternative queue.
+      ref: zf_alt-alt_overfill
+
+    - test: invalid_alt_attr_bufs
+      summary: Try invalid combinations of alt_count and alt_buf_size.
+      ref: zf_alt-invalid_alt_attr_bufs
+
+    - test: no_extra_data
+      summary: No extra data is sent after alternative cancelling.
+      ref: zf_alt-no_extra_data
+
+    - test: alt_overfill_param
+      summary: Gradually overfill a few alternative queues.
+      ref: zf_alt-alt_overfill_param
+
+  - group: bnbvalue
+    summary: Zetaferno tests for bad and boundary values
+    objective: ''
+    tests:
+    - test: bad_endpoints_limit
+      summary: Using inappropriate values for attributes setting endpoints limits
+      ref: bnbvalue-bad_endpoints_limit
+
+    - test: bad_address
+      summary: Invalid address processing in various ZF fucntions.
+      ref: bnbvalue-bad_address
+
+    - test: too_many_stacks_kill
+      summary: Receiving a signal when many threads create/destroy ZF stack
+      ref: bnbvalue-too_many_stacks_kill
+
+  - group: timestamps
+    summary: The test package contains Zetaferno Timestamps API tests.
+    objective: Timestamps Tests
+    tests:
+
+    - test: udp_rx
+      summary: Obtaining RX timestamps for received UDP packets
+      ref: timestamps-udp_rx
+
+    - test: tcp_rx
+      summary: Obtaining RX timestamps for received TCP packets
+      ref: timestamps-tcp_rx
+
+    - test: udp_tx
+      summary: Obtaining TX timestamps for sent UDP packets
+      ref: timestamps-udp_tx
+
+    - test: udp_tx_drop
+      summary: Dropped packet reports when obtaining UDP TX timestamps
+      ref: timestamps-udp_tx_drop
+
+    - test: tcp_tx
+      summary: Obtaining TX timestamps for sent TCP packets
+      ref: timestamps-tcp_tx
+
+    - test: tcp_tx_retransmit
+      summary: Obtaining TX timestamps for retransmitted TCP packets
+      ref: timestamps-tcp_tx_retransmit
+
+    - test: alloc_stack_sleep_connect
+      summary: Sleeping between stack allocation and creating TCP zocket
+      ref: timestamps-alloc_stack_sleep_connect
+
+  - group: overlapped
+    summary: The test package contains zetaferno overlapped API tests.
+    objective: Overlapped tests
+    tests:
+
+    - test: recv_pftf
+      summary: Packets reception using packets from the future API
+      ref: overlapped-recv_pftf
+
+    - test: recv_pftf_two_muxer
+      summary: Packets reception on multiple zockets using packets from the future API
+      ref: overlapped-recv_pftf_two_muxer
+
+    - test: recv_pftf_bad_csum
+      summary: Receiving packets with bad or zero UDP layer checksum using PFTF API
+      ref: overlapped-recv_pftf_bad_csum
+
+  - group: zf_ds
+    summary: The test package contains tests for Zetaferno Delegated Sends API.
+    objective: ZF Delegated Sends Tests
+    tests:
+
+    - test: simple_ds
+      summary: Sending data with Delegated Sends API
+      ref: zf_ds-simple_ds
+
+    - test: small_header
+      summary: Passing too small headers size to zf_delegated_send_prepare()
+      ref: zf_ds-small_header
+
+    - test: bad_socket
+      summary: Calling zf_delegated_send_prepare() in inappropriate TCP state
+      ref: zf_ds-bad_socket
+
+    - test: sendq_busy
+      summary: Calling zf_delegated_send_prepare() when send queue is filled
+      ref: zf_ds-sendq_busy
+
+    - test: nocwin
+      summary: Calling zf_delegated_send_prepare() with insufficient congestion window
+      ref: zf_ds-nocwin
+
+    - test: nowin
+      summary: Calling zf_delegated_send_prepare() with insufficient send window
+      ref: zf_ds-nowin
+
+    - test: extend_ds_win
+      summary: Extending window for delegated sends
+      ref: zf_ds-extend_ds_win
+
+    - test: complete_overfill
+      summary: Passing too many iovecs to zf_delegated_send_complete()
+      ref: zf_ds-complete_overfill
+
+    - test: complete_too_much
+      summary: Passing too much data to zf_delegated_send_complete()
+      ref: zf_ds-complete_too_much
+
+    - test: push_flag
+      summary: Setting TCP PUSH flag for delegated sends
+      ref: zf_ds-push_flag
+
+  - group: performance
+    summary: The test package contains tests for measuring performance.
+    objective: Performance Tests
+    tests:
+
+    - test: udppingpong
+      summary: Checking UDP performance
+      ref: performance-udppingpong
+
+    - test: tcppingpong
+      summary: Checking TCP performance
+      ref: performance-tcppingpong
+
+    - test: altpingpong
+      summary: Checking performance of alternative sends
+      ref: performance-altpingpong

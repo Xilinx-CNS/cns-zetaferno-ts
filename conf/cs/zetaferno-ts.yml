@@ -1,0 +1,35 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved.
+
+#
+# Zetaferno API testing configuration.
+#
+
+- add:
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/env:ZF_ATTR"
+      value: "interface=${TE_IUT_TST1}${SFC_ZF_ATTR_ADD:+;}${SFC_ZF_ATTR_ADD}"
+
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/env:TE_RPC_ZF_HAS_PENDING_THREADS_ENABLED"
+      value: "${TE_RPC_ZF_HAS_PENDING_THREADS_ENABLED}"
+
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/env:TE_RPC_ZF_HAS_PENDING_REACTOR_ENABLED"
+      value: "${TE_RPC_ZF_HAS_PENDING_REACTOR_ENABLED}"
+
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/env:TE_RPC_ZF_STACK_FD_IOMUX_ENABLED"
+      value: "${TE_RPC_ZF_STACK_FD_IOMUX_ENABLED}"
+
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/env:TE_RPC_ZF_STACK_FD_IOMUX_DEF"
+      value: "${TE_RPC_ZF_STACK_FD_IOMUX_DEF}"
+
+- set:
+    # Bug 62108: Zetaferno API does not and won't care about errno state.
+    - oid: "/local:/iut_errno_change_no_check:"
+      value: "${TE_ERRNO_CHANGE_NO_CHECK:-1}"
+
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/socklib:"
+      value: "${SFC_ZETAFERNO_LIB}"
+
+- add:
+    - oid: "/local:${TE_IUT_TA_NAME_NS}/libdir:"
+      value: "${L5_SOCKAPI_LIBDIR:-/usr/lib}"

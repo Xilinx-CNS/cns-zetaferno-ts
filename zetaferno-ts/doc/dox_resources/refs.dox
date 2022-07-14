@@ -1,0 +1,22 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+@defgroup zf_refs_details References List
+
+@{
+
+List of references across the tests specification.
+
+@todo This one is incomplete.
+
+@refs_start
+
+@ref_ref        ZF_DOC ZF_DOC
+@ref_title      SFC Zetaferno API
+@ref_identifier http://xilinx.com/
+
+@refs_end
+
+@}                              <!--refs -->
+
+*/

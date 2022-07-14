@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno TCP zocket API tests</description>
+
+    <author mailto="Andrey.Dmitrov@oktetlabs.ru"/>
+
+    <req id="SOCK_STREAM" sticky="true"/>
+
+    <session>
+
+        <run>
+            <session>
+                <arg name="recv_func" type="tcp_recv_func"/>
+
+                <run>
+                    <script name="tcp_passive"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="shutdown_how" type="shutdown_func">
+                        <value>free</value>
+                        <value>none</value>
+                    </arg>
+                    <arg name="send_func" type="tcp_send_func"/>
+                </run>
+
+                <run>
+                    <script name="tcp_active"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="send_func" type="tcp_send_func"/>
+                </run>
+
+                <run>
+                    <script name="listen_backlog"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="clients_num">
+                        <value>3</value>
+                    </arg>
+                    <arg name="accept_one" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="listen_share_stack"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer.two_addrs"/>
+                    </arg>
+                    <arg name="same_addr" type="boolean"/>
+                    <arg name="same_port" type="boolean"/>
+                    <arg name="overflow_limit" type="boolean"/>
+                </run>
+
+                <run>
+                    <script name="locked_rx_buffers"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="open_method" type="tcp_conn_open_method"/>
+                </run>
+
+                <run>
+                    <script name="share_events_queue"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="open_method" type="tcp_conn_open_method"/>
+                    <arg name="zft_num">
+                        <value>10</value>
+                    </arg>
+                    <arg name="data_size_min" list="">
+                        <value>1</value>
+                        <value>500</value>
+                        <value>1000</value>
+                    </arg>
+                    <arg name="data_size_max" list="">
+                        <value>500</value>
+                        <value>1000</value>
+                        <value>2000</value>
+                    </arg>
+                    <arg name="bunch_size" list="">
+                        <value>50</value>
+                        <value>40</value>
+                        <value>20</value>
+                    </arg>
+                    <arg name="bunches_num">
+                        <value>100</value>
+                    </arg>
+                    <arg name="send_from">
+                        <value>IUT</value>
+                        <value>TESTER</value>
+                        <value>RANDOM</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="recv_buffer_overfilling"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="open_method" type="tcp_conn_open_method"/>
+                    <arg name="zft_num">
+                        <value>10</value>
+                        <value>20</value>
+                    </arg>
+                    <arg name="gradual" type="boolean"/>
+                    <arg name="small_packet" type="boolean"/>
+                    <arg name="n_bufs">
+                        <value>0</value>
+                        <value>10000</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="two_active_zockets"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer.two_addrs"/>
+                    </arg>
+                    <arg name="single_stack" type="boolean"/>
+                    <arg name="first_bind_addr">
+                        <!-- See bug 62884 <value>null</value> -->
+                        <value>addr1:port1</value>
+                        <value>do_not_bind</value>
+                    </arg>
+                    <arg name="second_bind_addr">
+                        <!-- See bug 62884 <value>null</value> -->
+                        <value>addr1:port1</value>
+                        <value>addr1:port2</value>
+                        <value>addr2:port1</value>
+                        <value>addr2:port2</value>
+                        <value>do_not_bind</value>
+                    </arg>
+                    <arg name="first_connect_addr">
+                        <value>addr1:port1</value>
+                    </arg>
+                    <arg name="second_connect_addr">
+                        <value>addr1:port1</value>
+                        <value>addr1:port2</value>
+                        <value>addr2:port1</value>
+                        <value>addr2:port2</value>
+                    </arg>
+                </run>
+
+                <run>
+                    <script name="reactor_recv_event"/>
+                    <arg name="env">
+                        <value ref="env.peer2peer"/>
+                    </arg>
+                    <arg name="open_method" type="tcp_conn_open_method"/>
+                </run>
+
+            </session>
+        </run>
+
+        <run>
+            <script name="delayed_ack"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="tcp_delayed_ack">
+                <value>-1</value> <!-- Do not set -->
+                <value>0</value>
+                <value>1</value>
+            </arg>
+            <arg name="active" type="boolean"/>
+            <arg name="delay_reactor" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="bind_address_types"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="local_addr_type" type="address_port_type"/>
+        </run>
+
+        <run>
+            <script name="listen_address_types"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="addr_type" type="address_port_type">
+                <value>specific</value>
+                <value>specific_zero_port</value>
+                <value>wildcard</value>
+                <value>wildcard_zero_port</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="unaccepted_endpoints_limit"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="max_tcp_endpoints">
+                <value>do_not_set</value>
+                <value>1</value>
+                <value>10</value>
+                <value>64</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="zc_read_buffers"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="bunches_num">
+                <value>100</value>
+            </arg>
+            <arg name="bunch_size">
+                <value>10</value>
+            </arg>
+            <arg name="iovcnt">
+                <value>1</value>
+                <value>5</value>
+                <value>20</value>
+                <value>50</value>
+                <value>-1</value>
+            </arg>
+            <arg name="recv_done_some" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="wait_for_time_wait"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="tcp_wait_for_time_wait">
+                <value>-1</value> <!-- Do not set -->
+                <value>0</value>
+                <value>1</value>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="use_muxer" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+              </arg>
+            <arg name="muxer_timeout" list="">
+                <value>-1</value>
+                <value>-1</value>
+                <value>0</value>
+                <value>500</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="bind_twice"/>
+            <arg name="env">
+                <value ref="env.peer2peer.two_addrs"/>
+            </arg>
+            <arg name="addr_type" type="address_port_type">
+                <value>specific</value>
+                <value>specific_zero_port</value>
+                <value>wildcard</value>
+                <value>wildcard_zero_port</value>
+            </arg>
+            <arg name="same_addr" type="boolean"/>
+            <arg name="same_port" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="endpoints_limit"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="max_tcp_endpoints">
+                <value>-1</value> <!-- Do not set -->
+                <value>1</value>
+                <value>10</value>
+                <value>64</value>
+            </arg>
+            <arg name="connect_after_bind" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zockets_release"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="iterations_num">
+                <value>500</value>
+            </arg>
+            <arg name="active" type="boolean" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="recreate_listener" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+                <value>FALSE</value>
+            </arg>
+            <arg name="recreate_stack" type="boolean" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="close_zockets" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="read_all" type="boolean"/>
+            <arg name="close_iut_first" type="boolean"/>
+            <arg name="zero_state_wait" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zockets_release"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="iterations_num">
+                <value>500</value>
+            </arg>
+            <arg name="active" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="recreate_listener" type="boolean" list="">
+                <value>TRUE</value>
+                <value>FALSE</value>
+            </arg>
+            <arg name="recreate_stack" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="close_zockets" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="read_all" type="boolean"/>
+            <arg name="close_iut_first" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="zero_state_wait" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="listeners_limit"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="max_endpoints">
+                <value>-1</value>
+                <value>1</value>
+                <value>10</value>
+                <value>16</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="listen_reuse_laddr"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="first_addr_type" type="address_port_type">
+                <!-- Currently only binding zocket to
+                     specific address works -->
+                <value>specific</value>
+            </arg>
+            <arg name="second_addr_type" type="address_port_type">
+                <value>specific</value>
+            </arg>
+            <arg name="same_stack" type="boolean"/>
+            <arg name="close_listener" type="boolean"/>
+            <arg name="close_accepted" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="close_iut_first" type="boolean" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="send_buffer_overfilling">
+                <!-- The test with ZF TX timestamps produces assert().
+                     Disabled until ON-12597 is fixed. -->
+                <req id="NO_ZF_TX_TS"/>
+            </script>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="zft_num">
+                <value>10</value>
+                <value>20</value>
+            </arg>
+            <arg name="gradual" type="boolean"/>
+            <arg name="small_packet" type="boolean"/>
+            <arg name="large_n_bufs" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zft_send_buffers"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="number">
+                <value>10</value>
+            </arg>
+            <arg name="length">
+                <value>1</value>
+                <value>1000</value>
+                <value>5000</value>
+                <value>-1</value> <!-- Random length -->
+            </arg>
+            <arg name="iovcnt">
+                <value>1</value>
+                <value>10</value>
+                <value>100</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="connect_after_fault" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="rst" type="boolean" list="">
+                <value>FALSE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_route" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="incomplete_connect" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer_gw"/>
+            </arg>
+            <arg name="status">
+                <value>refused</value>
+                <value>timeout</value>
+                <value>delayed</value>
+            </arg>
+            <arg name="function">
+                <value>zft_shutdown_tx</value>
+                <value>zft_free</value>
+                <value>zft_getname</value>
+                <value>zft_zc_recv</value>
+                <value>zft_recv</value>
+                <value>zft_send</value>
+                <value>zft_addr_bind</value>
+                <value reqs="ZF_ALTS">zft_alternatives_queue</value>
+                <value>zft_send_space</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="zft_handle" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="bind" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="zft_send_space"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+        </run>
+
+        <run>
+            <script name="zc_recv_done_some"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="send_iut" type="boolean"/>
+            <arg name="done_some_zero" type="boolean">
+                <value>FALSE</value> <!-- See SF bug 66346 -->
+            </arg>
+        </run>
+
+        <run>
+            <script name="msg_more" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+            <arg name="func">
+                <value>send</value>
+                <value>single</value>
+                <value>send_single</value>
+                <value>single_send</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="sleep_after_stack_alloc"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="open_method" type="tcp_conn_open_method"/>
+        </run>
+
+    </session>
+</package>

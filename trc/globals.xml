@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<globals>
+
+    <global name="env.iut_only">
+        <value>{{{'pco_iut':IUT}}}</value>
+    </global>
+
+    <global name="env.peer2peer">
+        <value>'net':iut{{{'pco_iut':iut},addr:'iut_addr':inet:unicast,if:'iut_if',addr:'iut_lladdr':ether:unicast},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast}}</value>
+    </global>
+
+    <global name="env.peer2peer.three_addrs">
+        <value>'net':IUT{{{'pco_iut':IUT},addr:'iut_addr1':inet:unicast,addr:'iut_addr2':inet:unicast,addr:'iut_addr3':inet:unicast,addr:'wild_addr':inet:wildcard,if:'iut_if',addr:'iut_lladdr':ether:unicast},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast}}</value>
+    </global>
+
+    <global name="env.peer2peer_mcast">
+        <value>IUT{{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,addr:'mcast_addr':inet:multicast,if:'iut_if'},{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if'}}</value>
+    </global>
+
+    <global name="env.peer2peer_gw">
+        <value>'net1':IUT{'iut_host'{{'pco_iut':IUT},addr:'iut_addr':inet:unicast,if:'iut_if',addr:'iut_lladdr':ether:unicast},'GW'{{'pco_gw':tester},addr:'gw_iut_addr':inet:unicast,if:'gw_iut_if',addr:'gw_fake_addr':inet:fake,addr:'gw_iut_lladdr':ether:unicast}},'net2':tester{'GW'{addr:'gw_tst_addr':inet:unicast,if:'gw_tst_if',addr:'alien_link_addr':ether:alien,addr:'gw_tst_lladdr':ether:unicast},'tst_host'{{'pco_tst':tester},addr:'tst_addr':inet:unicast,if:'tst_if',addr:'tst_lladdr':ether:unicast,addr:'tst_alien_addr':inet:alien,addr:'tst_fake_addr':inet:fake}}</value>
+    </global>
+
+</globals>

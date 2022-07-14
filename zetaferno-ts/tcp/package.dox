@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup tcp TCP zocket API testing
+@ingroup zf
+@{
+
+The test package contains zetaferno TCP zocket API tests.
+
+@author Andrey Dmitrov <Andrey.Dmitrov@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref tcp-bind_address_types
+-# @ref tcp-bind_twice
+-# @ref tcp-connect_after_fault
+-# @ref tcp-delayed_ack
+-# @ref tcp-endpoints_limit
+-# @ref tcp-incomplete_connect
+-# @ref tcp-listen_address_types
+-# @ref tcp-listen_backlog
+-# @ref tcp-listeners_limit
+-# @ref tcp-listen_reuse_laddr
+-# @ref tcp-listen_share_stack
+-# @ref tcp-locked_rx_buffers
+-# @ref tcp-recv_buffer_overfilling
+-# @ref tcp-send_buffer_overfilling
+-# @ref tcp-share_events_queue
+-# @ref tcp-tcp_active
+-# @ref tcp-tcp_passive
+-# @ref tcp-two_active_zockets
+-# @ref tcp-unaccepted_endpoints_limit
+-# @ref tcp-wait_for_time_wait
+-# @ref tcp-zc_read_buffers
+-# @ref tcp-zft_send_buffers
+-# @ref tcp-zockets_release
+-# @ref tcp-zft_handle
+-# @ref tcp-zft_send_space
+-# @ref tcp-reactor_recv_event
+-# @ref tcp-msg_more
+-# @ref tcp-sleep_after_stack_alloc
+
+@} tcp
+
+*/

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno tests for bad and boundary values</description>
+
+    <author mailto="Dmitry.Izbitsky@oktetlabs.ru"/>
+
+    <session>
+
+        <run>
+            <script name="bad_endpoints_limit"/>
+            <arg name="env">
+                <value ref="env.iut_only"/>
+            </arg>
+            <arg name="attribute">
+                <value>max_udp_rx_endpoints</value>
+                <value>max_udp_tx_endpoints</value>
+                <value>max_tcp_endpoints</value>
+                <value>max_tcp_listen_endpoints</value>
+            </arg>
+            <arg name="value">
+                <value>0</value>
+                <value>65</value>
+                <value>-10</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="bad_address"/>
+            <arg name="env">
+                <value ref="env.peer2peer_ipv4v6"/>
+            </arg>
+            <arg name="function">
+                <value>zftl_listen</value>
+                <value>zft_addr_bind</value>
+                <value>zft_connect</value>
+            </arg>
+            <arg name="family">
+                <value>AF_INET</value>
+                <value>AF_INET6</value>
+                <!-- <value>AF_PACKET</value> Not implemented in TE yet. -->
+                <value>AF_UNIX</value>
+            </arg>
+            <arg name="length">
+                <value>sockaddr_in-1</value>
+                <value>sockaddr_in</value>
+                <value>sockaddr_in6</value>
+                <value>sockaddr_storage</value>
+            </arg>
+            <arg name="mod_laddr" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="mod_raddr" type="boolean">
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="bad_address"/>
+            <arg name="env">
+                <value ref="env.peer2peer_ipv4v6"/>
+            </arg>
+            <arg name="function">
+                <value>zfur_addr_bind</value>
+                <value>zfur_addr_unbind</value>
+                <value>zfut_alloc</value>
+            </arg>
+            <arg name="family">
+                <value>AF_INET</value>
+                <value>AF_INET6</value>
+                <!-- <value>AF_PACKET</value> Not implemented in TE yet. -->
+                <value>AF_UNIX</value>
+            </arg>
+            <arg name="length">
+                <value>sockaddr_in-1</value>
+                <value>sockaddr_in</value>
+                <value>sockaddr_in6</value>
+                <value>sockaddr_storage</value>
+            </arg>
+            <arg name="mod_laddr" type="boolean" list="">
+                <value>TRUE</value>
+                <value>TRUE</value>
+                <value>FALSE</value>
+            </arg>
+            <arg name="mod_raddr" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="too_many_stacks_kill" track_conf="nohistory"/>
+            <arg name="env">
+                <value ref="env.iut_only"/>
+            </arg>
+            <arg name="threads_num">
+                <value>512</value>
+            </arg>
+            <arg name="nr_hugepages">
+                <value>3000</value>
+            </arg>
+        </run>
+
+    </session>
+</package>

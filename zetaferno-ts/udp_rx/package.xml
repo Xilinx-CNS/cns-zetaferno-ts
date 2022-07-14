@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<package version="1.0">
+    <description>Zetaferno UDP RX zocket API tests</description>
+
+    <author mailto="Andrey.Dmitrov@oktetlabs.ru"/>
+
+    <req id="SOCK_DGRAM_RX" sticky="true"/>
+
+    <session>
+        <run>
+            <script name="recv_dgram"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="func" type="udp_recv_func"/>
+        </run>
+
+        <run>
+            <script name="bind_address_types"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="local_addr_type" type="address_port_type"/>
+            <arg name="remote_addr_type" type="address_port_type"/>
+        </run>
+
+        <run>
+            <script name="multiple_bind"/>
+            <arg name="env">
+                <value ref="env.peer2peer.three_addrs"/>
+            </arg>
+            <arg name="same_port" type="boolean"/>
+            <arg name="first_addr_type" type="address_type">
+                <value>specific</value>
+            </arg>
+            <arg name="second_addr_type" type="address_type">
+                <value>specific</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="bind_twice"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="local_addr_type" type="address_type">
+                <value>specific</value>
+            </arg>
+            <arg name="remote_addr_type" type="remote_address_type"/>
+        </run>
+
+        <run>
+            <script name="endpoints_limit" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="max_endpoints">
+                <value>-1</value>
+                <value>0</value>
+                <value>1</value>
+                <value>10</value>
+                <value>64</value>
+                <value>65</value>
+            </arg>
+            <arg name="binds_num">
+                <value>10</value>
+            </arg>
+            <arg name="bind_later" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="multiple_bind_intensive" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="binds_number">
+                <value>10</value>
+            </arg>
+            <arg name="datagrams_number">
+                <value>200</value>
+            </arg>
+            <arg name="laddr_diff_port" type="boolean"/>
+            <arg name="laddr_diff_addr" type="boolean"/>
+            <arg name="raddr_diff_port" type="boolean"/>
+            <arg name="raddr_diff_addr" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="multiple_unbind" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="diff_port" type="boolean"/>
+            <arg name="diff_laddr" type="boolean"/>
+            <arg name="zero_port" type="boolean">
+                <value>FALSE</value>
+            </arg>
+            <arg name="binds_number">
+                <value>10</value>
+            </arg>
+            <arg name="iterations_number">
+                <value>100</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="multiple_unbind" track_conf="silent"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="diff_port" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="diff_laddr" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="zero_port" type="boolean">
+                <value>TRUE</value>
+            </arg>
+            <arg name="binds_number">
+                <value>10</value>
+            </arg>
+            <arg name="iterations_number">
+                <value>100</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="zockets_release"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="iterations_num">
+                <value>100</value>
+            </arg>
+            <arg name="recreate_stack" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="close_zocket" type="boolean" list="">
+                <value>TRUE</value>
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="read_all" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="events_queue"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="zockets_num">
+                <value>10</value>
+            </arg>
+            <arg name="bunches_num">
+                <value>100</value>
+            </arg>
+            <arg name="bunch_size">
+                <value>50</value>
+            </arg>
+            <arg name="read_all" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="buffers_number"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="bunches_num" list="">
+                <value>100</value>
+                <value>100</value>
+                <value>100</value>
+                <value>100</value>
+                <value>1000</value>
+            </arg>
+            <arg name="bunch_size">
+                <value>5</value>
+                <value>20</value>
+                <value>50</value>
+            </arg>
+            <arg name="iovcnt" list="">
+                <value>1</value>
+                <value>5</value>
+                <value>20</value>
+                <value>50</value>
+                <!-- Value -1 to use random iovcnt for each bunch in
+                     range [1, bunch_size + 10].-->
+                <value>-1</value>
+            </arg>
+        </run>
+
+        <run>
+            <script name="overfill_receive_queue"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="urx_num" list="">
+                <value>10</value>
+                <value>20</value>
+            </arg>
+            <arg name="reactor" type="boolean" list="">
+                <value>FALSE</value>
+                <value>TRUE</value>
+            </arg>
+            <arg name="small_dgram" type="boolean"/>
+        </run>
+
+        <run>
+            <script name="locked_buffers"/>
+            <arg name="env">
+                <value ref="env.peer2peer"/>
+            </arg>
+            <arg name="same_laddr" type="boolean"/>
+            <arg name="send_func" type="udp_send_func"/>
+        </run>
+
+    </session>
+</package>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. -->
+<test name="udp_rx" type="package">
+  <objective>UDP RX tests</objective>
+  <notes/>
+  <iter result="PASSED">
+    <notes/>
+    <test name="recv_dgram" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="func"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="multiple_bind" type="script">
+      <objective>Bind to a few local IP addresses including INADDR_ANY, check that datagrams are received from the bound addresses and not received from others.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="first_addr_type"/>
+        <arg name="same_port"/>
+        <arg name="second_addr_type"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="bind_address_types" type="script">
+      <objective>Pass a specific address, INADDR_ANY or NULL using (non-)zero port as remote and local address arguments in zfur_addr_bind() call, check that data can be received in all cases.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">null</arg>
+        <arg name="remote_addr_type"/>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EFAULT</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific</arg>
+        <arg name="remote_addr_type">specific_zero_port</arg>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific</arg>
+        <arg name="remote_addr_type">wildcard</arg>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific_zero_port</arg>
+        <arg name="remote_addr_type">specific_zero_port</arg>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific_zero_port</arg>
+        <arg name="remote_addr_type">wildcard</arg>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">wildcard</arg>
+        <arg name="remote_addr_type"/>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">wildcard_zero_port</arg>
+        <arg name="remote_addr_type"/>
+        <notes/>
+        <results tags="linux" key="L5 62144">
+          <result value="FAILED">
+            <verdict>Function zfur_addr_bind() failed with errno: RPC-EINVAL</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific</arg>
+        <arg name="remote_addr_type">specific</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific</arg>
+        <arg name="remote_addr_type">wildcard_zero_port</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific</arg>
+        <arg name="remote_addr_type">null</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific_zero_port</arg>
+        <arg name="remote_addr_type">specific</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific_zero_port</arg>
+        <arg name="remote_addr_type">wildcard_zero_port</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type">specific_zero_port</arg>
+        <arg name="remote_addr_type">null</arg>
+        <notes/>
+      </iter>
+    </test>
+    <test name="bind_twice" type="script">
+      <objective>Try to bind to the same address couple twice, check that the second call fails gracefully.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="local_addr_type"/>
+        <arg name="remote_addr_type"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="endpoints_limit" type="script">
+      <objective>Specify maximum number of endpoints using ZF attribute max_udp_rx_endpoints, allocate all possible zockets and check that they can accept datagrams.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">-1</arg>
+        <notes/>
+        <results tags="x3" key="ST-2605">
+          <result value="FAILED">
+            <verdict>zfur_addr_bind() failed with errno: RPC-ENOSPC</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">0</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">1</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">10</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">64</arg>
+        <notes/>
+        <results tags="x3" key="ST-2605">
+          <result value="FAILED">
+            <verdict>zfur_addr_bind() failed with errno: RPC-ENOSPC</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="bind_later"/>
+        <arg name="binds_num"/>
+        <arg name="env"/>
+        <arg name="max_endpoints">65</arg>
+        <notes/>
+      </iter>
+    </test>
+    <test name="multiple_bind_intensive" type="script">
+      <objective>Bind a few times with different combinations of laddr and raddr adrress and port values. Send a number of datagrams from tester with various source and destination addresses - as expected by IUT and unexpected (wrong port or IP of source or destination). Check that IUT zocket receives only expected datagrams.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="binds_number"/>
+        <arg name="datagrams_number"/>
+        <arg name="env"/>
+        <arg name="laddr_diff_addr"/>
+        <arg name="laddr_diff_port"/>
+        <arg name="raddr_diff_addr"/>
+        <arg name="raddr_diff_port"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="multiple_unbind" type="script">
+      <objective>Bind UDP RX zocket to a few address couples with different local or remote address or port, then repeatively unbind it from some of them and check that only packets sent to bound addresses are received.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="diff_port"/>
+        <arg name="diff_laddr"/>
+        <arg name="zero_port"/>
+        <arg name="binds_number"/>
+        <arg name="iterations_number"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="zockets_release" type="script">
+      <objective>Open-close up to maximum zockets number in the loop multiple times.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="close_zocket"/>
+        <arg name="env"/>
+        <arg name="iterations_num"/>
+        <arg name="read_all"/>
+        <arg name="recreate_stack"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="events_queue" type="script">
+      <objective>Send datagrams to a few UDP zockets in random order, check that datagrams are delivered to proper zocket and no loss.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="bunch_size"/>
+        <arg name="bunches_num"/>
+        <arg name="env"/>
+        <arg name="read_all"/>
+        <arg name="zockets_num"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="buffers_number" type="script">
+      <objective>Read datagrams using various buffers number (iovcnt) in random order a lot of times, check for resources leakage.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="bunch_size"/>
+        <arg name="bunches_num"/>
+        <arg name="env"/>
+        <arg name="iovcnt"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="overfill_receive_queue" type="script">
+      <objective>Transmit data from tester to a few UDP RX zockets until receive buffers are overfilled, read all the data and check that read datagrams correspond to first sent, i.e. no loss while receive queue is not overfilled.</objective>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="reactor"/>
+        <arg name="small_dgram"/>
+        <arg name="urx_num"/>
+        <notes/>
+      </iter>
+    </test>
+    <test name="locked_buffers" type="script">
+      <objective/>
+      <notes/>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="same_laddr"/>
+        <arg name="send_func"/>
+        <notes/>
+      </iter>
+    </test>
+  </iter>
+</test>

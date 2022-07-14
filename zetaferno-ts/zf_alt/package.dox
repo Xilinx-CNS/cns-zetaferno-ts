@@ -1,0 +1,32 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup zf_alt Zetaferno Alternative Queues
+@ingroup zf
+@{
+
+This package is intended to test ZF API for alternative queues.
+
+@author Dmitry Izbitsky <Dmitry.Izbitsky@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref zf_alt-fill_bufs
+-# @ref zf_alt-queue_mult
+-# @ref zf_alt-alt_overfill
+-# @ref zf_alt-alt_reuse
+-# @ref zf_alt-zft_shutdown
+-# @ref zf_alt-zft_alt_sample
+-# @ref zf_alt-zft_alt_send
+-# @ref zf_alt-alt_release
+-# @ref zf_alt-many_zft
+-# @ref zf_alt-no_ack
+-# @ref zf_alt-zft_tst_send
+-# @ref zf_alt-peer_close
+-# @ref zf_alt-no_extra_data
+-# @ref zf_alt-zft_mixed_send
+
+@} zf_alt
+
+*/

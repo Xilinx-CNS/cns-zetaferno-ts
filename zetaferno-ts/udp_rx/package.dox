@@ -1,0 +1,30 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* (c) Copyright 2016 - 2022 Xilinx, Inc. All rights reserved. */
+/**
+
+@defgroup udp_rx UDP RX zocket testing
+@ingroup zf
+@{
+
+The test package contains zetaferno UDP RX zocket API tests.
+
+@author Andrey Dmitrov <Andrey.Dmitrov@oktetlabs.ru>
+
+@par Tests:
+
+-# @ref udp_rx-recv_dgram
+-# @ref udp_rx-multiple_bind
+-# @ref udp_rx-multiple_unbind
+-# @ref udp_rx-bind_address_types
+-# @ref udp_rx-bind_twice
+-# @ref udp_rx-endpoints_limit
+-# @ref udp_rx-multiple_bind_intensive
+-# @ref udp_rx-zockets_release
+-# @ref udp_rx-events_queue
+-# @ref udp_rx-buffers_number
+-# @ref udp_rx-overfill_receive_queue
+-# @ref udp_rx-locked_buffers
+
+@} udp_rx
+
+*/
