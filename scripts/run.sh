@@ -14,7 +14,7 @@ popd >/dev/null
 test "$(basename $RUNDIR)" = "scripts" && RUNDIR="${RUNDIR}/.."
 test -e "${RUNDIR}/scripts/guess.sh" && source "${RUNDIR}/scripts/guess.sh"
 
-. ${SF_TS_CONFDIR}/scripts/lib.run
+. ${TE_TS_RIGSDIR}/scripts/lib.run
 
 if test -z "${TE_BASE}" ; then
     if test -e dispatcher.sh ; then
@@ -123,14 +123,14 @@ if test -z "${TE_BUILD}" ; then
 fi
 
 MY_OPTS=
-MY_OPTS="${MY_OPTS} --conf-dirs=\"${RUNDIR}/conf:${SF_TS_CONFDIR}\""
+MY_OPTS="${MY_OPTS} --conf-dirs=\"${RUNDIR}/conf:${SF_TS_CONFDIR}:${TE_TS_RIGSDIR}\""
 test -e "${RUNDIR}/trc/top.xml" &&
     MY_OPTS="${MY_OPTS} --trc-db=${RUNDIR}/trc/top.xml"
 
 host="$cfg"
 if ! $is_cmod ; then
-    hosts=$(cat ${SF_TS_CONFDIR}/env/$cfg | egrep "(TE_IUT=|TE_TST[0-9]*=)" | sed "s/.*=//")
-    export_te_workspace_make_dirs "${SF_TS_CONFDIR}/env/$host"
+    hosts=$(cat ${TE_TS_RIGSDIR}/env/$cfg | egrep "(TE_IUT=|TE_TST[0-9]*=)" | sed "s/.*=//")
+    export_te_workspace_make_dirs "${TE_TS_RIGSDIR}/env/$host"
 fi
 
 if test -z "$ignore_network_manager" ; then
