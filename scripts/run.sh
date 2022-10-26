@@ -59,7 +59,7 @@ ${TE_BASE}/dispatcher.sh --help
 exit 1
 }
 
-RUN_OPTS="${RUN_OPTS} --trc-comparison=normalised --build-meson --sniff-not-feed-conf"
+RUN_OPTS="${RUN_OPTS} --trc-comparison=normalised --sniff-not-feed-conf"
 RUN_OPTS="${RUN_OPTS} --tester-only-req-logues"
 
 is_cmod=false
