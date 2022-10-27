@@ -57,6 +57,8 @@ for loop in once ; do
     echo "Guessing TE_TS_RIGSDIR"
     export TE_TS_RIGSDIR="${GUESS_TOP_DIR}"/../ts-env
     test -d "${TE_TS_RIGSDIR}" && break;
+    export TE_TS_RIGSDIR="${GUESS_TOP_DIR}"/../ts-rigs
+    test -d "${TE_TS_RIGSDIR}" && break;
 
     echo "Cannot import TS env '$TE_TS_RIGSDIR'" >&2
     exit 1
