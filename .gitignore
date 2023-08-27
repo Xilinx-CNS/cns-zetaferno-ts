@@ -54,3 +54,4 @@ log_struct.xml
 ta.Agt_*
 ta.LogListener
 ta.list
+ta_cores.*
