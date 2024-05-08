@@ -386,7 +386,7 @@ main(int argc, char *argv[])
 
     memset(&user_data, 0, sizeof(user_data));
     user_data.reports = &all_reports;
-    user_data.ms_adjust = ts_get_clock_adjustment(pco_iut, pco_tst);
+    user_data.ms_adjust = ts_get_clock_adjustment(pco_iut, pco_gw);
 
     TEST_STEP("Process packets captured by the CSAP and check that "
               "every packet has a matching packet report. Check that "
