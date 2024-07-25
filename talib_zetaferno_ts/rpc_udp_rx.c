@@ -109,7 +109,7 @@ TARPC_FUNC(zfur_addr_bind,
     static rpc_ptr_id_namespace ns = RPC_PTR_ID_NS_INVALID;
     struct zfur *us;
 
-    PREPARE_ADDR_GEN(laddr, out->laddr, 0, TRUE, FALSE);
+    PREPARE_ADDR_GEN(laddr, out->laddr, 0, true, false);
     PREPARE_ADDR(raddr, in->raddr, 0);
 
     out->common._errno = TE_RC(TE_RCF_PCH, TE_EFAIL);
