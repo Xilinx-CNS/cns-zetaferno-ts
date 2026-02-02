@@ -79,39 +79,32 @@ tarpc_iovec2rpc_iovec(tarpc_iovec *tarpc_iov,
 }
 
 /* See description in rpc_zf_internal.h */
-te_errno
+void
 zf_pkt_report_rpc2str(tarpc_zf_pkt_report *report, te_string *str)
 {
-    return te_string_append(str, "{ timestamp=" TE_PRINTF_TS_FMT ", "
-                            "start=%u, bytes=%u, flags=0x%x (%s) }",
-                            TE_PRINTF_TS_VAL(report->timestamp),
-                            report->start, report->bytes,
-                            report->flags,
-                            zf_pkt_report_flags_rpc2str(report->flags));
+    te_string_append(str, "{ timestamp=" TE_PRINTF_TS_FMT ", "
+                     "start=%u, bytes=%u, flags=0x%x (%s) }",
+                     TE_PRINTF_TS_VAL(report->timestamp),
+                     report->start, report->bytes,
+                     report->flags,
+                     zf_pkt_report_flags_rpc2str(report->flags));
 }
 
 /* See description in rpc_zf_internal.h */
-te_errno
+void
 zf_pkt_reports_rpc2str(tarpc_zf_pkt_report *reports, int count,
                        te_string *str)
 {
     int i;
-    te_errno rc;
 
-    rc = te_string_append(str, "[ ");
-    if (rc != 0)
-        return rc;
+    te_string_append(str, "[ ");
 
     for (i = 0; i < count; i++)
     {
-        rc = zf_pkt_report_rpc2str(&reports[i], str);
-        if (rc != 0)
-            return rc;
+        zf_pkt_report_rpc2str(&reports[i], str);
 
-        rc = te_string_append(str, (i < count - 1 ? ", " : " "));
-        if (rc != 0)
-            return rc;
+        te_string_append(str, (i < count - 1 ? ", " : " "));
     }
 
-    return te_string_append(str, "]");
+    te_string_append(str, "]");
 }

@@ -88,11 +88,9 @@ extern void tarpc_iovec2rpc_iovec(tarpc_iovec *tarpc_iov,
  *
  * @param report        Pointer to tarpc_zf_pkt_report value.
  * @param str           String where to append string representation.
- *
- * @return Status code.
  */
-extern te_errno zf_pkt_report_rpc2str(tarpc_zf_pkt_report *report,
-                                      te_string *str);
+extern void zf_pkt_report_rpc2str(tarpc_zf_pkt_report *report,
+                                  te_string *str);
 
 /**
  * Get string representation of an array of tarpc_zf_pkt_report values.
@@ -100,10 +98,8 @@ extern te_errno zf_pkt_report_rpc2str(tarpc_zf_pkt_report *report,
  * @param reports       Pointer to the array.
  * @param count         Number of elements in the array.
  * @param str           String where to append string representation.
- *
- * @return Status code.
  */
-extern te_errno zf_pkt_reports_rpc2str(tarpc_zf_pkt_report *reports,
+extern void zf_pkt_reports_rpc2str(tarpc_zf_pkt_report *reports,
                                        int count, te_string *str);
 
 #endif /* !___RPC_ZF_INTERNAL_H__ */
