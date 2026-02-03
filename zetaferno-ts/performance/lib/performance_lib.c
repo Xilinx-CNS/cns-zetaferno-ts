@@ -322,7 +322,7 @@ zfts_try_set_zf_if(rcf_rpc_server *rpcs, const char *if_name,
     }
 
     *unset = TRUE;
-    CHECK_RC(te_string_append(&zf_attr, "interface=%s", if_name));
+    te_string_append(&zf_attr, "interface=%s", if_name);
     rpc_setenv(rpcs, "ZF_ATTR", zf_attr.ptr, 1);
 }
 

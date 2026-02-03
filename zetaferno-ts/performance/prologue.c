@@ -25,8 +25,8 @@ copy_app(const char *src_dir, const char *dst_dir, const char *dst_ta,
     te_string src_path = TE_STRING_INIT_STATIC(PATH_MAX);
     te_string dst_path = TE_STRING_INIT_STATIC(PATH_MAX);
 
-    CHECK_RC(te_string_append(&src_path, "%s/%s", src_dir, app_name));
-    CHECK_RC(te_string_append(&dst_path, "%s/%s", dst_dir, app_name));
+    te_string_append(&src_path, "%s/%s", src_dir, app_name);
+    te_string_append(&dst_path, "%s/%s", dst_dir, app_name);
 
     RING("Copy %s to %s:%s", src_path.ptr, dst_ta, dst_path.ptr);
     CHECK_RC(rcf_ta_put_file(dst_ta, 0, src_path.ptr, dst_path.ptr));

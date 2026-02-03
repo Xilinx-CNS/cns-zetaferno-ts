@@ -35,10 +35,8 @@ extern const char *zf_delegated_send_rc_rpc2str(
  *
  * @param ds      Pointer to zf_ds structure.
  * @param str     Pointer to TE string.
- *
- * @return Status code.
  */
-extern te_errno zf_ds_h2str_append(struct zf_ds *ds, te_string *str);
+extern void zf_ds_h2str_append(struct zf_ds *ds, te_string *str);
 
 /**
  * Call zf_delegated_send_prepare() before doing delegated sends.

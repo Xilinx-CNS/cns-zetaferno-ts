@@ -51,22 +51,16 @@ zf_delegated_send_rc_rpc2str(rpc_zf_delegated_send_rc rc)
 }
 
 /* See description in rpc_zf_ds.h */
-te_errno
+void
 zf_ds_h2str_append(struct zf_ds *ds, te_string *str)
 {
 #define APPEND_FIELD(_field, _format) \
     do {                                                          \
-        rc = te_string_append(str, #_field "=" _format ", ",      \
+        te_string_append(str, #_field "=" _format ", ",           \
                               ds->_field);                        \
-        if (rc != 0)                                              \
-            return rc;                                            \
     } while (0)
 
-    te_errno rc;
-
-    rc = te_string_append(str, "{ ");
-    if (rc != 0)
-        return rc;
+    te_string_append(str, "{ ");
 
     APPEND_FIELD(headers, "%p");
     APPEND_FIELD(headers_size, "%d");
@@ -81,7 +75,7 @@ zf_ds_h2str_append(struct zf_ds *ds, te_string *str)
     APPEND_FIELD(reserved, "%d");
 
     te_string_cut(str, 2);
-    return te_string_append(str, " }");
+    te_string_append(str, " }");
 #undef APPEND_FIELD
 }
 
@@ -231,14 +225,7 @@ int
 rpc_zf_delegated_send_complete(rcf_rpc_server *rpcs, rpc_zft_p ts,
                                rpc_iovec *iov, int iovlen, int flags)
 {
-#define STR_APPEND(_format...) \
-    do {                                                      \
-        if (str_rc == 0)                                      \
-            str_rc = te_string_append(&str, _format);         \
-    } while (0)
-
     te_string str = TE_STRING_INIT_STATIC(4096);
-    te_errno str_rc = 0;
 
     struct tarpc_iovec *iovec_arr = NULL;
     int i;
@@ -266,19 +253,19 @@ rpc_zf_delegated_send_complete(rcf_rpc_server *rpcs, rpc_zft_p ts,
             if (!rpcs->silent)
             {
                 if (str.len > 0)
-                    STR_APPEND(", ");
+                    te_string_append(&str, ", ");
 
-                STR_APPEND("{ .iov_base=%p, .iov_len=%lu",
-                           iov[i].iov_base,
-                           (long unsigned int)(iov[i].iov_len));
+                te_string_append(&str, "{ .iov_base=%p, .iov_len=%lu",
+                                 iov[i].iov_base,
+                                 (long unsigned int)(iov[i].iov_len));
                 if (iov[i].iov_rlen != iov[i].iov_len)
                 {
-                    STR_APPEND(", .iov_rlen=%lu }",
-                               (long unsigned int)(iov[i].iov_rlen));
+                    te_string_append(&str, ", .iov_rlen=%lu }",
+                                     (long unsigned int)(iov[i].iov_rlen));
                 }
                 else
                 {
-                    STR_APPEND(" }");
+                    te_string_append(&str, " }");
                 }
             }
         }
@@ -298,7 +285,6 @@ rpc_zf_delegated_send_complete(rcf_rpc_server *rpcs, rpc_zft_p ts,
                  RPC_PTR_VAL(ts), iov, str.ptr, iovlen,
                  flags, out.retval);
     RETVAL_INT(zf_delegated_send_complete, out.retval);
-#undef STR_APPEND
 }
 
 /* See description in rpc_zf_ds.h */
