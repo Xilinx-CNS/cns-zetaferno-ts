@@ -236,6 +236,10 @@ main(int argc, char *argv[])
                               (const uint8_t *)(gw_tst_lladdr->sa_data),
                               TAPI_TCP_DEF_WINDOW, &tcp_conn));
 
+#ifdef HAVE_TAPI_TCP_ACCEPT_PARTIAL_OVERLAP
+    CHECK_RC(tapi_tcp_set_accept_partial_overlap(tcp_conn, true));
+#endif
+
     TEST_STEP("Establish TCP connection between Tester and IUT, "
               "obtaining connected TCP zocket with @b zftl_accept().");
 
