@@ -95,7 +95,7 @@ typedef struct csap_data {
 
     /* Output values */
 
-    te_bool pkts_captured;        /**< Set to TRUE on capturing the
+    bool pkts_captured;           /**< Set to @c true on capturing the
                                        first packet */
 
     uint32_t init_seqn;           /**< Set to the SEQN of the first
@@ -107,11 +107,11 @@ typedef struct csap_data {
                                        SEQN + payload length, not taking
                                        into account any gaps) */
 
-    te_bool unexp_seqn;           /**< Set to TRUE when unexpected SEQN
+    bool unexp_seqn;              /**< Set to @c true when unexpected SEQN
                                        is encountered (before
                                        send_gap_start if it is not
                                        negative, or among all packets) */
-    te_bool failed;               /**< Set to TRUE if some failure occurred
+    bool failed;                  /**< Set to @c true if some failure occurred
                                        when processing captured packets */
 } csap_data;
 
@@ -130,7 +130,7 @@ csap_cb(asn_value *pkt, void *user_data)
         if (_rc != 0)                                           \
         {                                                       \
             ERROR(#_expr " failed returning %r", _rc);          \
-            data->failed = TRUE;                                \
+            data->failed = true;                                \
             goto cleanup;                                       \
         }                                                       \
     } while (0)
@@ -143,8 +143,8 @@ csap_cb(asn_value *pkt, void *user_data)
 
     te_string pkt_log = TE_STRING_INIT_STATIC(1024);
     const char *pkt_log_pref = "";
-    te_bool pkt_err = FALSE;
-    te_bool pkt_warn = FALSE;
+    bool pkt_err = false;
+    bool pkt_warn = false;
 
     if (data->failed)
         goto cleanup;
@@ -158,7 +158,7 @@ csap_cb(asn_value *pkt, void *user_data)
         {
             ERROR("The first packet should be SYN, but it has non-empty "
                   "payload");
-            data->failed = TRUE;
+            data->failed = true;
         }
 
         /*
@@ -167,7 +167,7 @@ csap_cb(asn_value *pkt, void *user_data)
          */
         data->init_seqn = seqn + 1;
         data->exp_seqn = data->init_seqn;
-        data->pkts_captured = TRUE;
+        data->pkts_captured = true;
 
         RING("The initial packet was captured");
     }
@@ -178,13 +178,13 @@ csap_cb(asn_value *pkt, void *user_data)
             if (data->send_gap_start < 0 ||
                 (long int)(seqn - data->init_seqn) < data->send_gap_start)
             {
-                data->unexp_seqn = TRUE;
-                pkt_err = TRUE;
+                data->unexp_seqn = true;
+                pkt_err = true;
                 pkt_log_pref = "Unexpected SEQN: ";
             }
             else
             {
-                pkt_warn = TRUE;
+                pkt_warn = true;
                 pkt_log_pref = "Unexpected SEQN (ignored): ";
             }
         }
@@ -300,18 +300,18 @@ main(int argc, char *argv[])
     int ds_sent_num = 0;
     int max_len = 0;
 
-    te_bool first_packet;
-    te_bool readable;
+    bool first_packet;
+    bool readable;
 
     csap_handle_t csap = CSAP_INVALID_HANDLE;
     csap_data user_data;
 
-    te_bool send_before;
-    te_bool send_after;
+    bool send_before;
+    bool send_after;
     int ds_packets;
-    te_bool single_packet;
-    te_bool use_cancel;
-    te_bool reactor_after_send;
+    bool single_packet;
+    bool use_cancel;
+    bool reactor_after_send;
 
     TEST_START;
     TEST_GET_PCO(pco_iut);
@@ -328,7 +328,7 @@ main(int argc, char *argv[])
     TEST_GET_BOOL_PARAM(reactor_after_send);
 
     /* Do not print out packets captured by CSAP. */
-    rcf_tr_op_log(FALSE);
+    rcf_tr_op_log(false);
 
     TEST_STEP("Configure a CSAP on Tester to capture TCP packets sent "
               "from IUT.");
@@ -357,7 +357,7 @@ main(int argc, char *argv[])
     zfts_create_stack(pco_iut, &attr, &stack);
     TEST_STEP("Establish TCP connection between a zocket on IUT and "
               "a socket on Tester.");
-    zfts_establish_tcp_conn(TRUE, pco_iut, attr, stack, &iut_zft,
+    zfts_establish_tcp_conn(true, pco_iut, attr, stack, &iut_zft,
                             iut_addr, pco_tst, &tst_s, tst_addr);
 
     if (ds_packets != DS_PACKETS_NONE)
@@ -371,7 +371,7 @@ main(int argc, char *argv[])
     total_len = 0;
     if (send_before)
     {
-        TEST_STEP("If @p send_before is @c TRUE, send some data with "
+        TEST_STEP("If @p send_before is @c true, send some data with "
                   "@b zft_send_single() from IUT.");
         len = rand_range(1, ZFTS_TCP_DATA_MAX);
         rpc_zft_send_single(pco_iut, iut_zft, send_buf, len, 0);
@@ -417,7 +417,7 @@ main(int argc, char *argv[])
 
     TEST_STEP("Call @b zf_delegated_send_prepare() on IUT, asking it "
               "to reserve enough bytes to send required number of packets "
-              "(and more if @b use_cancel is @c TRUE).");
+              "(and more if @b use_cancel is @c true).");
     RPC_AWAIT_ERROR(pco_iut);
     rc = rpc_zf_delegated_send_prepare(pco_iut, iut_zft, ds_req_len,
                                        0, 0, &ds);
@@ -463,11 +463,11 @@ main(int argc, char *argv[])
 
     TEST_STEP("Fill an array of iovecs with buffers to be sent and to "
               "be passed to @b zf_delegated_send_complete(). If "
-              "@p single_packet is @c TRUE, it should contain only a "
+              "@p single_packet is @c true, it should contain only a "
               "single buffer; otherwise - a few of them.");
     RING("%d bytes will be sent wia Delegated Sends API", ds_sent_len);
     ds_rem_len = ds_sent_len;
-    first_packet = TRUE;
+    first_packet = true;
     while (ds_rem_len > 0)
     {
         max_len = MIN(ds_rem_len, mss);
@@ -498,7 +498,7 @@ main(int argc, char *argv[])
 
         total_len += iov.iov_len;
         ds_rem_len -= iov.iov_len;
-        first_packet = FALSE;
+        first_packet = false;
     }
 
     if (ds_packets != DS_PACKETS_NONE)
@@ -515,7 +515,7 @@ main(int argc, char *argv[])
                      "after it to update packet headers.");
         TEST_SUBSTEP("Call @b zf_reactor_perform() in a loop for a while "
                      "after each send if @b reactor_after_send is "
-                     "@c TRUE.");
+                     "@c true.");
 
         for (i = 0; i < ds_sent_num; i++)
         {
@@ -531,7 +531,7 @@ main(int argc, char *argv[])
 
             CHECK_RC(tapi_sock_raw_tcpv4_send(pco_iut, raw_iovs, 2,
                                               iut_if->if_index,
-                                              raw_socket, TRUE));
+                                              raw_socket, true));
 
             rpc_zf_delegated_send_tcp_advance(pco_iut, &ds,
                                               iov_ptr->iov_len);
@@ -570,14 +570,14 @@ main(int argc, char *argv[])
 
     if (use_cancel)
     {
-        TEST_STEP("If @p use_cancel is @c TRUE, call "
+        TEST_STEP("If @p use_cancel is @c true, call "
                   "@b zf_delegated_send_cancel() on the IUT zocket.");
         rpc_zf_delegated_send_cancel(pco_iut, iut_zft);
     }
 
     if (send_after)
     {
-        TEST_STEP("If @p send_after is @c TRUE, send a packet from "
+        TEST_STEP("If @p send_after is @c true, send a packet from "
                   "the IUT zocket with @b zft_send_single().");
         len = rand_range(1, ZFTS_TCP_DATA_MAX);
         rpc_zft_send_single(pco_iut, iut_zft, send_buf + total_len,
@@ -620,7 +620,7 @@ main(int argc, char *argv[])
 
     TEST_STEP("Check packets captured by the CSAP on Tester. If "
               "@b ds_packets is not @c all and @b send_after "
-              "is @c TRUE, check that all the packets actually "
+              "is @c true, check that all the packets actually "
               "sent before @b zf_delegated_send_complete() "
               "were sent in order and were not retransmitted. "
               "Otherwise check that this is true for all the "
