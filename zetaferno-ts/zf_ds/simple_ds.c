@@ -107,6 +107,9 @@ typedef struct csap_data {
                                        SEQN + payload length, not taking
                                        into account any gaps) */
 
+    /** Set to @c true when a partially overlapping packet is encountered */
+    bool overlap_detected;
+
     bool unexp_seqn;              /**< Set to @c true when unexpected SEQN
                                        is encountered (before
                                        send_gap_start if it is not
@@ -139,6 +142,7 @@ csap_cb(asn_value *pkt, void *user_data)
 
     uint32_t seqn;
     uint32_t payload_len;
+    uint32_t packet_end;
     uint32_t total_len;
 
     te_string pkt_log = TE_STRING_INIT_STATIC(1024);
@@ -151,6 +155,7 @@ csap_cb(asn_value *pkt, void *user_data)
 
     CB_CHECK_RC(asn_read_uint32(pkt, &seqn, "pdus.0.#tcp.seqn.#plain"));
     CB_CHECK_RC(tapi_tcp_get_hdrs_payload_len(pkt, NULL, &payload_len));
+    packet_end = seqn + payload_len;
 
     if (!data->pkts_captured)
     {
@@ -175,8 +180,21 @@ csap_cb(asn_value *pkt, void *user_data)
     {
         if (seqn != data->exp_seqn)
         {
-            if (data->send_gap_start < 0 ||
-                (long int)(seqn - data->init_seqn) < data->send_gap_start)
+            if ((int32_t)(seqn - data->exp_seqn) < 0 &&
+                (int32_t)(packet_end - data->exp_seqn) > 0)
+            {
+                /*
+                 * The packet overlaps previously captured data, but also
+                 * contains new data.
+                 */
+                data->overlap_detected = true;
+                data->exp_seqn = packet_end;
+                pkt_warn = true;
+                pkt_log_pref = "Partially overlapping SEQN: ";
+            }
+            else if (data->send_gap_start < 0 ||
+                     (long int)(seqn - data->init_seqn) <
+                     data->send_gap_start)
             {
                 data->unexp_seqn = true;
                 pkt_err = true;
@@ -190,7 +208,7 @@ csap_cb(asn_value *pkt, void *user_data)
         }
         else
         {
-            data->exp_seqn = seqn + payload_len;
+            data->exp_seqn = packet_end;
         }
 
         total_len = (seqn - data->init_seqn) + payload_len;
@@ -247,6 +265,11 @@ check_csap(const char *ta, csap_handle_t csap,
     {
         TEST_VERDICT("%s: packets with unexpected SEQN were detected "
                      "before any possible gap in sent data", stage);
+    }
+    if (user_data->overlap_detected)
+    {
+        RING_VERDICT("%s: partially overlapping TCP segments were "
+                     "detected", stage);
     }
 
     if (user_data->total_len != sent_bytes)
@@ -376,12 +399,6 @@ main(int argc, char *argv[])
         len = rand_range(1, ZFTS_TCP_DATA_MAX);
         rpc_zft_send_single(pco_iut, iut_zft, send_buf, len, 0);
         total_len += len;
-
-        /*
-         * ON-13896: call zf_reactor_perform() before completing
-         * a delegated reservation.
-         */
-        rpc_zf_process_events(pco_iut, stack);
     }
     sent_before_complete = total_len;
 
@@ -622,7 +639,7 @@ main(int argc, char *argv[])
               "@b ds_packets is not @c all and @b send_after "
               "is @c true, check that all the packets actually "
               "sent before @b zf_delegated_send_complete() "
-              "were sent in order and were not retransmitted. "
+              "were sent without gaps; partial overlaps are reported. "
               "Otherwise check that this is true for all the "
               "captured packets.");
     check_csap(pco_tst->ta, csap, &user_data, total_len,

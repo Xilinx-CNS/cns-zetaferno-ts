@@ -13,11 +13,83 @@
         <arg name="env"/>
         <arg name="send_before"/>
         <arg name="send_after"/>
-        <arg name="ds_packets"/>
+        <arg name="ds_packets">all</arg>
         <arg name="single_packet"/>
         <arg name="use_cancel"/>
         <arg name="reactor_after_send"/>
         <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before"/>
+        <arg name="send_after"/>
+        <arg name="ds_packets">none</arg>
+        <arg name="single_packet"/>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">TRUE</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before">FALSE</arg>
+        <arg name="send_after"/>
+        <arg name="ds_packets">none</arg>
+        <arg name="single_packet"/>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">FALSE</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before">TRUE</arg>
+        <arg name="send_after"/>
+        <arg name="ds_packets">none</arg>
+        <arg name="single_packet"/>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">FALSE</arg>
+        <notes/>
+        <results>
+          <result value="PASSED"/>
+          <result value="PASSED">
+            <verdict>At the end of the test: partially overlapping TCP segments were detected</verdict>
+          </result>
+        </results>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before"/>
+        <arg name="send_after"/>
+        <arg name="ds_packets">some</arg>
+        <arg name="single_packet"/>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">TRUE</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before"/>
+        <arg name="send_after"/>
+        <arg name="ds_packets">some</arg>
+        <arg name="single_packet">TRUE</arg>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">FALSE</arg>
+        <notes/>
+      </iter>
+      <iter result="PASSED">
+        <arg name="env"/>
+        <arg name="send_before"/>
+        <arg name="send_after"/>
+        <arg name="ds_packets">some</arg>
+        <arg name="single_packet">FALSE</arg>
+        <arg name="use_cancel"/>
+        <arg name="reactor_after_send">FALSE</arg>
+        <notes/>
+        <results>
+          <result value="PASSED"/>
+          <result value="PASSED">
+            <verdict>At the end of the test: partially overlapping TCP segments were detected</verdict>
+          </result>
+        </results>
       </iter>
     </test>
     <test name="small_header" type="script">
